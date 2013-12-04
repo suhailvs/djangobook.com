@@ -79,7 +79,7 @@ in the documentation and by members of the community.
 Installing an Official Release
 ------------------------------
 
-Official releases have a version number, such as 1.4.2, 1.4.1 or 1.4, and the latest
+Official releases have a version number, such as 1.5.2, 1.5.1 or 1.5, and the latest
 one is always available at http://www.djangoproject.com/download/.
 
 If you're on a Linux distribution that includes a package of Django, it's a
@@ -88,16 +88,16 @@ updates along with the rest of your system packages.
 
 If you don't have access to a prepackaged version, you can download and install
 the framework manually. To do so, first download the tarball, which will be
-named something like ``Django-1.4.2.tar.gz``. (It doesn't matter which
+named something like ``Django-1.6.tar.gz``. (It doesn't matter which
 local directory you download this file into; the installation process will put
 Django's files in the right place.) Then, unzip it and run ``setup.py install``,
 as you do with most Python libraries.
 
-Here's how that process looks on Unix systems:
+Here's how that process looks on Unix systems::
 
-#. ``tar xzvf Django-1.4.2.tar.gz``
-#. ``cd Django-*``
-#. ``sudo python setup.py install``
+    tar xzvf Django-1.6.tar.gz
+    cd Django-1.6
+    sudo python setup.py install
 
 On Windows, we recommend using 7-Zip (http://www.djangoproject.com/r/7zip/)
 to unzip ``.tar.gz`` files. Once you've unzipped the file, start up a DOS
@@ -195,7 +195,7 @@ successful, you should be able to import the module ``django``:
 
     >>> import django
     >>> django.VERSION
-    (1, 4, 2, 'final', 0)
+    (1, 6, 0, 'final', 0)
 
 .. admonition:: Interactive Interpreter Examples
 
@@ -455,12 +455,13 @@ if you haven't already, and run this command::
 You'll see something like this::
 
     Validating models...
-    0 errors found.
 
-    Django version 1.4.2, using settings 'mysite.settings'
-    Development server is running at http://127.0.0.1:8000/
+    0 errors found
+    December 04, 2013 - 09:32:03
+    Django version 1.6, using settings 'mysite.settings'
+    Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
-
+    
 This launches the server locally, on port 8000, accessible only to connections
 from your own computer. Now that it's running, visit http://127.0.0.1:8000/
 with your Web browser. You might see a different Django version depending on
