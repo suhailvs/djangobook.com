@@ -24,7 +24,7 @@ Streamlining Function Imports
 
 Consider this URLconf, which builds on the example in Chapter 3::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite.views import hello, current_datetime, hours_ahead
 
     urlpatterns = patterns('',
@@ -46,7 +46,7 @@ the previous one:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     **from mysite import views**
 
     urlpatterns = patterns('',
@@ -62,7 +62,7 @@ example:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^hello/$', **'mysite.views.hello'**),
@@ -87,7 +87,7 @@ this:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns(**'mysite.views'**,
         (r'^hello/$', **'hello'**),
@@ -131,7 +131,7 @@ this:
 
 Old::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^hello/$', 'mysite.views.hello'),
@@ -142,7 +142,7 @@ Old::
 
 New::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('mysite.views',
         (r'^hello/$', 'hello'),
@@ -169,7 +169,7 @@ debug mode. To do this, just check the value of the ``DEBUG`` setting at
 runtime, like so::
 
     from django.conf import settings
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -238,7 +238,7 @@ is ``(?P<name>pattern)``, where ``name`` is the name of the group and
 
 Here's an example URLconf that uses non-named groups::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -248,7 +248,7 @@ Here's an example URLconf that uses non-named groups::
 
 Here's the same URLconf, rewritten to use named groups::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -310,7 +310,7 @@ contents are identical except for the template they use::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -338,7 +338,7 @@ the view to determine the template, like so::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -371,7 +371,7 @@ With this in mind, we can rewrite our ongoing example like this::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -477,7 +477,7 @@ Take this code, for example::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -503,7 +503,7 @@ let's factor out the type of object they're displaying::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import models, views
 
     urlpatterns = patterns('',
@@ -574,7 +574,7 @@ URLconf parameter value will be used.
 
 For example, consider this URLconf::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -602,7 +602,7 @@ An example::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -712,7 +712,7 @@ Translated to a URLconf and view, the error looks like this::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -762,7 +762,7 @@ might build a nice way of doing that. Consider this URLconf/view layout::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -821,7 +821,7 @@ this technique could help simplify our ``some_page()`` view::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite import views
 
     urlpatterns = patterns('',
@@ -969,7 +969,7 @@ a new view function (``new_view``). The new function, ``new_view`` is defined
 Now, we can remove the ``if not request.user.is_authenticated()`` checks from
 our views and simply wrap them with ``requires_login`` in our URLconf::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite.views import requires_login, my_view1, my_view2, my_view3
 
     urlpatterns = patterns('',
@@ -992,7 +992,7 @@ At any point, your URLconf can "include" other URLconf modules. This
 essentially "roots" a set of URLs below other ones. For example, this
 URLconf includes other URLconfs::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^weblog/', include('mysite.blog.urls')),
@@ -1011,7 +1011,7 @@ remaining string to the included URLconf for further processing.
 
 Continuing this example, here's the URLconf ``mysite.blog.urls``::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^(\d\d\d\d)/$', 'mysite.blog.views.year_detail'),
@@ -1044,7 +1044,7 @@ example::
 
     # root urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^(?P<username>\w+)/blog/', include('foo.urls.blog')),
@@ -1052,7 +1052,7 @@ example::
 
     # foo/urls/blog.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^$', 'foo.views.blog_index'),
@@ -1081,7 +1081,7 @@ Set one::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^blog/', include('inner'), {'blogid': 3}),
@@ -1089,7 +1089,7 @@ Set one::
 
     # inner.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^archive/$', 'mysite.views.archive'),
@@ -1101,7 +1101,7 @@ Set two::
 
     # urls.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^blog/', include('inner')),
@@ -1109,7 +1109,7 @@ Set two::
 
     # inner.py
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         (r'^archive/$', 'mysite.views.archive', {'blogid': 3}),
