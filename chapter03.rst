@@ -118,7 +118,7 @@ This default URLconf includes some commonly used Django features commented out,
 so that activating those features is as easy as uncommenting the appropriate
 lines. If we ignore the commented-out code, here's the essence of a URLconf::
 
-    from django.conf.urls.defaults import patterns, include, url
+    from django.conf.urls import patterns, include, url
 
     urlpatterns = patterns('',
     )
@@ -146,7 +146,7 @@ project and, hence, displays that message.)
 To add a URL and view to the URLconf, just add a mapping between a URL
 pattern and the view function. Here's how to hook in our ``hello`` view::
 
-    from django.conf.urls.defaults import patterns, include, url
+    from django.conf.urls import patterns, include, url
     from mysite.views import hello
 
     urlpatterns = patterns('',
@@ -513,7 +513,7 @@ After adding that to ``views.py``, add the URLpattern to ``urls.py`` to tell
 Django which URL should handle this view. Something like ``/time/`` would make
 sense::
 
-    from django.conf.urls.defaults import patterns, include, url
+    from django.conf.urls import patterns, include, url
     from mysite.views import hello, current_datetime
 
     urlpatterns = patterns('',
@@ -669,7 +669,7 @@ we're using parentheses to *capture* data from the matched text.
 
 The final URLconf, including our previous two views, looks like this::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite.views import hello, current_datetime, hours_ahead
 
     urlpatterns = patterns('',

@@ -142,7 +142,7 @@ an HTML template (``latest_books.html``)::
 
     # urls.py (the URL configuration)
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     import views
 
     urlpatterns = patterns('',

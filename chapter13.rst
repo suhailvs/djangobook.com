@@ -366,7 +366,7 @@ Specifically, ``feed_dict`` should be a dictionary that maps a feed's slug
 (short URL label) to its ``Feed`` class. You can define the ``feed_dict``
 in the URLconf itself. Here's a full example URLconf::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from mysite.feeds import LatestEntries, LatestEntriesByCategory
 
     feeds = {
@@ -679,7 +679,7 @@ URLconf to add the extra versions. Here's a full example::
 
 And here's the accompanying URLconf::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from myproject.feeds import RssLatestEntries, AtomLatestEntries
 
     feeds = {
@@ -885,7 +885,7 @@ constructor to specify these attributes for all URLs.
 Here's an example of a URLconf using both ``FlatPageSitemap`` and
 ``GenericSiteMap`` (with the hypothetical ``Entry`` object from earlier)::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.contrib.sitemaps import FlatPageSitemap, GenericSitemap
     from mysite.blog.models import Entry
 

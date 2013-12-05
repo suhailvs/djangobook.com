@@ -47,7 +47,7 @@ Functions" in Chapter 8 for an overview of this technique.)
 For example, here's a simple URLconf you could use to present a static "about"
 page::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic.simple import direct_to_template
 
     urlpatterns = patterns('',
@@ -69,7 +69,7 @@ the URLconf to point to a view function:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic.simple import direct_to_template
     **from mysite.books.views import about_pages**
 
@@ -141,7 +141,7 @@ be using this ``Publisher`` object from Chapter 5::
 
 To build a list page of all publishers, we'd use a URLconf along these lines::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import list_detail
     from mysite.books.models import Publisher
 
@@ -159,7 +159,7 @@ by including a ``template_name`` key in the extra arguments dictionary:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import list_detail
     from mysite.books.models import Publisher
 
@@ -231,7 +231,7 @@ argument:
 
 .. parsed-literal::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import list_detail
     from mysite.books.models import Publisher
 

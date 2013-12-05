@@ -88,7 +88,7 @@ Example
 
 Given the following URLconf::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic.simple import direct_to_template
 
     urlpatterns = patterns('',
@@ -121,7 +121,7 @@ Example
 
 This URLconf redirects from ``/foo/<id>/`` to ``/bar/<id>/``::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic.simple import redirect_to
 
     urlpatterns = patterns('django.views.generic.simple',
@@ -164,7 +164,7 @@ Given the ``Author`` object from Chapter 5, we can use the ``object_list`` view
 to show a simple list of all authors given the following URLconf snippet::
 
     from mysite.books.models import Author
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import list_detail
 
     author_list_info = {
@@ -284,7 +284,7 @@ given author by modifying the URLconf:
 .. parsed-literal::
 
     from mysite.books.models import Author
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import list_detail
 
     author_list_info = {
@@ -399,7 +399,7 @@ Say a typical book publisher wants a page of recently published books. Given som
 .. parsed-literal::
 
     from mysite.books.models import Book
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import date_based
 
     book_info = {
@@ -478,7 +478,7 @@ the books published in a given year:
 .. parsed-literal::
 
     from mysite.books.models import Book
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
     from django.views.generic import date_based
 
     book_info = {

@@ -484,7 +484,7 @@ This ``page_not_found`` view should suffice for 99% of Web applications, but
 if you want to override the 404 view, you can specify ``handler404`` in your
 URLconf, like so::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         ...
@@ -495,7 +495,7 @@ URLconf, like so::
 Behind the scenes, Django determines the 404 view by looking for
 ``handler404``. By default, URLconfs contain the following line::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
 That takes care of setting ``handler404`` in the current module. As you can
 see in ``django/conf/urls/defaults.py``, ``handler404`` is set to
@@ -529,7 +529,7 @@ This ``server_error`` view should suffice for 99% of Web applications, but if
 you want to override the view, you can specify ``handler500`` in your
 URLconf, like so::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import *
 
     urlpatterns = patterns('',
         ...
