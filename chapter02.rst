@@ -22,31 +22,21 @@ framework is to make sure you have Python installed.
 Python Versions
 ---------------
 
-The core Django framework (version 1.4+) works with any Python version from 2.5
-to 2.7, inclusive. Django's optional GIS (Geographic Information Systems)
-support requires Python 2.5 to 2.7.
+The core Django framework (version 1.6+) works with any Python version from 2.6
+to 3.3, inclusive. Django's optional GIS (Geographic Information Systems)
+support requires Python 2.6 to 2.7.
 
 If you're not sure which version of Python to install and you have complete
 freedom over the decision, pick the latest one in the 2.x series: version 2.7.
-Although Django works equally well with any version from 2.5 to 2.7, the later
-versions of Python have performance improvements and additional language
-features you might like to use in your applications. Plus, certain third-party
-Django add-ons that you might want to use might require a version newer than
-Python 2.5, so using a later version of Python keeps your options open.
+Although Django works equally well with any version from 2.6 to 3.3, certain 
+third-party Django add-ons that you might want to use might require a later
+versions of Python 2.7.x.
 
-.. admonition:: Django and Python 3.x
+.. admonition:: Django on Jython
 
-    At the time of writing, Python 3.3 has been released, but Django
-    only supports it experimentally. This is because the Python 3.x series 
-    introduces a substantial number of backwards-incompatible changes to the
-    language itself, and, as a result, many major Python libraries and
-    frameworks, including Django (as of version 1.4), have not yet caught up.
-
-    Django 1.5 is slated to support Python 2.6, 2.7, and 3.2.  However,
-    support for Python 3.2 is considered a "preview", which means the
-    Django developers are not yet confident enough to promise
-    stability in production.  For that, they suggest you wait until
-    Django 1.6.
+    If you use Jython (a Python implementation for the Java platform), 
+    you’ll need to follow a few additional steps. 
+    See https://docs.djangoproject.com/en/1.6/howto/jython/ for details.
 
 Installation
 ------------
@@ -55,7 +45,7 @@ If you're on Linux or Mac OS X, you probably have Python already installed.
 Type ``python`` at a command prompt (or in Applications/Utilities/Terminal, in
 OS X). If you see something like this, then Python is installed::
 
-    Python 2.7.3rc2 (default, Apr 22 2012, 22:30:17)
+    Python 2.7.3rc2 (default, Apr 22 2014, 22:30:17)
     [GCC 4.6.3] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
@@ -79,7 +69,7 @@ in the documentation and by members of the community.
 Installing an Official Release
 ------------------------------
 
-Official releases have a version number, such as 1.5.2, 1.5.1 or 1.5, and the latest
+Official releases have a version number, such as 1.6.2, 1.6.1 or 1.6, and the latest
 one is always available at http://www.djangoproject.com/download/.
 
 If you're on a Linux distribution that includes a package of Django, it's a
@@ -392,15 +382,6 @@ The ``startproject`` command creates a directory containing five files::
             urls.py
             wsgi.py
 
-.. note:: Doesn't match what you see?
-
-    The default project layout recently changed. If you're seeing a
-    "flat" layout (with no inner ``mysite/`` directory), you're probably using
-    a version of Django that doesn't match this tutorial version. This book covers
-    Django 1.4 and above, so if you're using an older version you probably want to
-    consult Django's official documentation.
-
-    The documentation for Django 1.X version is available at https://docs.djangoproject.com/en/1.X/.
 
 These files are as follows:
 
@@ -428,7 +409,7 @@ These files are as follows:
   "table of contents" of your Django-powered site.
 
 * ``wsgi.py``: An entry-point for WSGI-compatible webservers to serve your project.
-  See How to deploy with WSGI (https://docs.djangoproject.com/en/1.4/howto/deployment/wsgi/) for more details.
+  See How to deploy with WSGI (https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/) for more details.
 
 Despite their small size, these files already constitute a working Django
 application.

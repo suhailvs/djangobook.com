@@ -187,7 +187,14 @@ Taken together, these pieces loosely follow a pattern called
 Model-View-Controller (MVC). Simply put, MVC is way of developing software so
 that the code for defining and accessing data (the model) is separate from
 request-routing logic (the controller), which in turn is separate from the user
-interface (the view). (We'll discuss MVC in more depth in Chapter 5.)
+interface (the view). 
+
+.. figure:: graphics/chapter01/mvcdesign.png
+   :alt: Screenshot of MVC Design Pattern.
+
+   Figure 1-1. MVC Design Pattern
+
+We'll discuss MVC in more depth in Chapter 5.
 
 A key advantage of such an approach is that components are *loosely coupled*.
 Each distinct piece of a Django-powered Web application has a single key
@@ -335,7 +342,7 @@ print by Apress.
 Required Django Version
 -----------------------
 
-This book covers Django 1.4.
+This book covers Django 1.6.
 
 Django's developers maintain backwards compatibility as much as possible, but
 occasionally introduce some backwards incompatible changes.  The changes in each
