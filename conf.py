@@ -28,7 +28,7 @@ import os
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = ['sphinxcontrib.fulltoc'] # <----- http://sphinxcontrib-fulltoc.readthedocs.org/en/latest/install.html
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -98,7 +98,8 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'scrolls'#default, scrolls.. see <----- http://sphinx-doc.org/theming.html#builtin-themes
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -256,3 +257,13 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+
+# Djangobook theme (comment these if you are not using themes folder)
+#*******************************************************************
+html_theme = 'djangobook' #alabaster
+html_theme_path = ['themes']
+html_use_index = False          # FIXME once proper index directives are added.
+html_show_sourcelink = False
+html_show_sphinx = False
