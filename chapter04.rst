@@ -590,24 +590,27 @@ filters.
 Tags
 ----
 
-if/else
-~~~~~~~
+if/elif/else
+~~~~~~~~~~~~
 
 The ``{% if %}`` tag evaluates a variable, and if that variable is "True"
-(i.e., it exists, is not empty, and is not a false Boolean value), the system
-will display everything between ``{% if %}`` and ``{% endif %}``, for example::
+(i.e., it exists, is not empty, and is not a false Boolean value) the 
+contents of the block are output:
 
-    {% if today_is_weekend %}
-        <p>Welcome to the weekend!</p>
-    {% endif %}
-
-An ``{% else %}`` tag is optional::
-
-    {% if today_is_weekend %}
+    {% if special_day %}
+        <p>Welcome to {{ special_day }}</p>
+    {% elif today_is_weekend %}
         <p>Welcome to the weekend!</p>
     {% else %}
         <p>Get back to work.</p>
     {% endif %}
+
+``{% elif %}`` and ``{% else %}`` tags are optional::
+
+    {% if today_is_weekend %}
+        <p>Welcome to the weekend!</p>    
+    {% endif %}
+
 
 .. admonition:: Python "Truthiness"
 
@@ -670,17 +673,6 @@ combine different operators. For example, this is valid::
 
     {% if athlete_list or coach_list or parent_list or teacher_list %}
 
-There is no ``{% elif %}`` tag. Use nested ``{% if %}`` tags to accomplish
-the same thing::
-
-    {% if athlete_list %}
-        <p>Here are the athletes: {{ athlete_list }}.</p>
-    {% else %}
-        <p>No athletes are available.</p>
-        {% if coach_list %}
-            <p>Here are the coaches: {{ coach_list }}.</p>
-        {% endif %}
-    {% endif %}
 
 Make sure to close each ``{% if %}`` with an ``{% endif %}``. Otherwise, Django
 will throw a ``TemplateSyntaxError``.
