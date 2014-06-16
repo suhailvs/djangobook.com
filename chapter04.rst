@@ -139,6 +139,13 @@ Here is the most basic way you can use Django's template system in Python code:
    template as a string, with all of the variables and template tags
    evaluated according to the context.
 
+
+Now, let’s hop into the interactive Python shell and play around with the free API Django gives you. To invoke the Python shell, use this command::
+
+    $ python manage.py shell
+
+We’re using this instead of simply typing ``python``, because manage.py sets the ``DJANGO_SETTINGS_MODULE`` environment variable, which gives Django the Python import path to your mysite/settings.py file.
+
 In code, here's what that looks like::
 
     >>> from django import template

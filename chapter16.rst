@@ -144,6 +144,11 @@ The Django sites framework provides a place for you to store the ``name`` and
 ``domain`` for each site in your Django project, which means you can reuse
 those values in a generic way.
 
+In Django 1.5, to protect from host poisoning attacks, your domains must be 
+added in ``ALLOWED_HOSTS`` in settings.py as shown below
+
+    ALLOWED_HOSTS = []
+
 How to Use the Sites Framework
 ------------------------------
 
