@@ -88,11 +88,13 @@ model name to ``_set``.
 
 
 .. admonition:: Field name restrictions
-    A field name cannot contain more than one underscore in a row, due to the way Django’s query lookup syntax works. For example:
+
+    A field name cannot contain more than one underscore in a row, due to the way 
+    Django’s query lookup syntax works. For example::
 
         class Example(models.Model):
             foo__bar = models.IntegerField() # 'foo__bar' has two underscores!
-    
+
 Accessing Many-to-Many Values
 -----------------------------
 

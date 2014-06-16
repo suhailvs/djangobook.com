@@ -1098,32 +1098,25 @@ To solve these issues, we'll use *template loading* and *template directories*.
 Template Loading
 ================
 
-Django provides a convenient and powerful API for loading templates from the
-filesystem, with the goal of removing redundancy both in your template-loading
-calls and in your templates themselves.
+Django searches for template directories in a number of places, depending 
+on your template-loader settings (see `Loader types` below), but the most 
+basic way of specifying template directories is by using the TEMPLATE_DIRS 
+setting.
 
-In order to use this template-loading API, first you'll need to tell the
-framework where you store your templates. The place to do this is in your
-settings file -- the ``settings.py`` file that we mentioned last chapter, when
-we introduced the ``ROOT_URLCONF`` setting.
+The TEMPLATE_DIRS setting
+-------------------------
 
-If you're following along, open your ``settings.py`` and find the
-``TEMPLATE_DIRS`` setting. By default, it's an empty tuple, likely containing
-some auto-generated comments::
-
-    TEMPLATE_DIRS = (
-        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-        # Always use forward slashes, even on Windows.
-        # Don't forget to use absolute paths, not relative paths.
-    )
-
-This setting tells Django's template-loading mechanism where to look for
-templates. Pick a directory where you'd like to store your templates and add it
-to ``TEMPLATE_DIRS``, like so::
+Tell Django what your template directories are by using the TEMPLATE_DIRS setting 
+in your settings.py file. This should be set to a list or tuple of strings that 
+contain full paths to your template directory(ies). Example::
 
     TEMPLATE_DIRS = (
-        '/home/django/mysite/templates',
+      "/home/html/templates/lawrence.com",
+      "/home/html/templates/default",
     )
+Your templates can go anywhere you want, as long as the directories and templates 
+are readable by the Web server. They can have any extension you want, such as 
+.html or .txt, or they can have no extension at all.
 
 There are a few things to note:
 

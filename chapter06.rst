@@ -240,7 +240,7 @@ Within the ``books`` directory (``mysite/books``), create a file called
 ``admin.py``, and type in the following lines of code::
 
     from django.contrib import admin
-    from mysite.books.models import Publisher, Author, Book
+    from books.models import Publisher, Author, Book
 
     admin.site.register(Publisher)
     admin.site.register(Author)

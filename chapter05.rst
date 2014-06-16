@@ -78,7 +78,7 @@ Here's a sneak preview of how the previous view can be rewritten using Django's
 database API::
 
     from django.shortcuts import render
-    from mysite.books.models import Book
+    from books.models import Book
 
     def book_list(request):
         books = Book.objects.order_by('name')
