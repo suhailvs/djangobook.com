@@ -220,8 +220,9 @@ that with a second view function::
     # views.py
 
     def search(request):
-        if 'q' in request.GET:
-            message = 'You searched for: %r' % request.GET['q']
+        query=request.GET.get('q', '')
+        if query:
+            message = 'You searched for: %r' % query
         else:
             message = 'You submitted an empty form.'
         return HttpResponse(message)
