@@ -177,7 +177,7 @@ The accompanying template, ``search_form.html``, could look like this::
         <title>Search</title>
     </head>
     <body>
-        <form action="/search/" method="get">
+        <form action="/search-form/" method="get">
             <input type="text" name="q">
             <input type="submit" value="Search">
         </form>
@@ -186,11 +186,11 @@ The accompanying template, ``search_form.html``, could look like this::
 
 The URLpattern in ``urls.py`` could look like this::
 
-    from mysite.books import views
+    from books.views import search_form
 
     urlpatterns = patterns('',
         # ...
-        url(r'^search-form/$', views.search_form),
+        url(r'^search-form/$', search_form),
         # ...
     )
 
