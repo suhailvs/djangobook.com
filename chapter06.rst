@@ -553,7 +553,7 @@ list pages. Edit ``admin.py`` to make these changes:
 .. parsed-literal::
 
     from django.contrib import admin
-    from mysite.books.models import Publisher, Author, Book
+    from books.models import Publisher, Author, Book
 
     **class AuthorAdmin(admin.ModelAdmin):**
         **list_display = ('first_name', 'last_name', 'email')**
@@ -624,7 +624,7 @@ Next, let's add some date filters to our ``Book`` model's change list page:
 .. parsed-literal::
 
     from django.contrib import admin
-    from mysite.books.models import Publisher, Author, Book
+    from books.models import Publisher, Author, Book
 
     class AuthorAdmin(admin.ModelAdmin):
         list_display = ('first_name', 'last_name', 'email')

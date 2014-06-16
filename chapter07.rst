@@ -280,7 +280,7 @@ the user's search query into our book database (again, in ``views.py``)::
 
     from django.http import HttpResponse
     from django.shortcuts import render
-    from mysite.books.models import Book
+    from books.models import Book
 
     def search(request):
         if 'q' in request.GET and request.GET['q']:
@@ -351,7 +351,7 @@ render the template again, like this:
 
     from django.http import HttpResponse
     from django.shortcuts import render
-    from mysite.books.models import Book
+    from books.models import Book
 
     def search_form(request):
         return render(request, 'search_form.html')

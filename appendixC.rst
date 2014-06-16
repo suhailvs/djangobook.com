@@ -163,7 +163,7 @@ Example
 Given the ``Author`` object from Chapter 5, we can use the ``object_list`` view
 to show a simple list of all authors given the following URLconf snippet::
 
-    from mysite.books.models import Author
+    from books.models import Author
     from django.conf.urls import *
     from django.views.generic import list_detail
 
@@ -283,7 +283,7 @@ given author by modifying the URLconf:
 
 .. parsed-literal::
 
-    from mysite.books.models import Author
+    from books.models import Author
     from django.conf.urls import *
     from django.views.generic import list_detail
 
@@ -398,7 +398,7 @@ Say a typical book publisher wants a page of recently published books. Given som
 
 .. parsed-literal::
 
-    from mysite.books.models import Book
+    from books.models import Book
     from django.conf.urls import *
     from django.views.generic import date_based
 
@@ -477,7 +477,7 @@ the books published in a given year:
 
 .. parsed-literal::
 
-    from mysite.books.models import Book
+    from books.models import Book
     from django.conf.urls import *
     from django.views.generic import date_based
 

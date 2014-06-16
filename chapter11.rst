@@ -71,7 +71,7 @@ the URLconf to point to a view function:
 
     from django.conf.urls import *
     from django.views.generic.simple import direct_to_template
-    **from mysite.books.views import about_pages**
+    **from books.views import about_pages**
 
     urlpatterns = patterns('',
         (r'^about/$', direct_to_template, {
@@ -143,7 +143,7 @@ To build a list page of all publishers, we'd use a URLconf along these lines::
 
     from django.conf.urls import *
     from django.views.generic import list_detail
-    from mysite.books.models import Publisher
+    from books.models import Publisher
 
     publisher_info = {
         'queryset': Publisher.objects.all(),
@@ -161,7 +161,7 @@ by including a ``template_name`` key in the extra arguments dictionary:
 
     from django.conf.urls import *
     from django.views.generic import list_detail
-    from mysite.books.models import Publisher
+    from books.models import Publisher
 
     publisher_info = {
         'queryset': Publisher.objects.all(),
@@ -233,7 +233,7 @@ argument:
 
     from django.conf.urls import *
     from django.views.generic import list_detail
-    from mysite.books.models import Publisher
+    from books.models import Publisher
 
     publisher_info = {
         'queryset': Publisher.objects.all(),
@@ -399,7 +399,7 @@ Next, we'll write the ``books_by_publisher`` view itself::
 
     from django.shortcuts import get_object_or_404
     from django.views.generic import list_detail
-    from mysite.books.models import Book, Publisher
+    from books.models import Book, Publisher
 
     def books_by_publisher(request, name):
 
@@ -447,7 +447,7 @@ custom view:
 
 .. parsed-literal::
 
-    from mysite.books.views import author_detail
+    from books.views import author_detail
 
     urlpatterns = patterns('',
         # ...
@@ -460,7 +460,7 @@ Then we'd write our wrapper function::
     import datetime
     from django.shortcuts import get_object_or_404
     from django.views.generic import list_detail
-    from mysite.books.models import Author
+    from books.models import Author
 
     def author_detail(request, author_id):
         # Delegate to the generic view and get an HttpResponse.

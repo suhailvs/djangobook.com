@@ -46,7 +46,7 @@ As we explained in Chapter 5, accessing the value for a particular field on
 a database object is as straightforward as using an attribute. For example,
 to determine the title of the book with ID 50, we'd do the following::
 
-    >>> from mysite.books.models import Book
+    >>> from books.models import Book
     >>> b = Book.objects.get(id=50)
     >>> b.title
     u'The Django Book'
@@ -265,7 +265,7 @@ by typing ``psql`` (for PostgreSQL), and we'd execute the following statements::
 After the ``ALTER TABLE`` statement, we'd verify that the change worked
 properly by starting the Python shell and running this code::
 
-    >>> from mysite.books.models import Book
+    >>> from books.models import Book
     >>> Book.objects.all()[:5]
 
 .. SL Tested ok

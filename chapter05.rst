@@ -579,7 +579,7 @@ after *every* element of a tuple, regardless of whether the tuple has only a
 single element. This avoids the issue of forgetting commas, and there's no
 penalty for using that extra comma.)
 
-``'mysite.books'`` refers to the ``books`` app we're working on. Each app in
+``'books'`` refers to the ``books`` app we're working on. Each app in
 ``INSTALLED_APPS`` is represented by its full Python path -- that is, the path
 of packages, separated by dots, leading to the app package.
 
