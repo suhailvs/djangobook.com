@@ -602,7 +602,7 @@ if/elif/else
 
 The ``{% if %}`` tag evaluates a variable, and if that variable is "True"
 (i.e., it exists, is not empty, and is not a false Boolean value) the 
-contents of the block are output:
+contents of the block are output::
 
     {% if special_day %}
         <p>Welcome to {{ special_day }}</p>
@@ -611,6 +611,7 @@ contents of the block are output:
     {% else %}
         <p>Get back to work.</p>
     {% endif %}
+
 
 ``{% elif %}`` and ``{% else %}`` tags are optional::
 
@@ -1113,6 +1114,7 @@ contain full paths to your template directory(ies). Example::
       "/home/html/templates/lawrence.com",
       "/home/html/templates/default",
     )
+
 Your templates can go anywhere you want, as long as the directories and templates 
 are readable by the Web server. They can have any extension you want, such as 
 .html or .txt, or they can have no extension at all.

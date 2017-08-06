@@ -191,8 +191,8 @@ directives::
 
     django-admin.py dumpdata --exclude=auth --exclude=contenttypes
 
-By default, ``dumpdata`` will format its output in JSON, but you can use the
-``--format`` option to specify another format. Currently supported formats
+By default, ``dumpdata`` will format its output in JSON, but you can use 
+the ``--format`` option to specify another format. Currently supported formats
 are listed in :ref:`serialization-formats`.
 
 By default, ``dumpdata`` will output all data on a single line. This isn't
