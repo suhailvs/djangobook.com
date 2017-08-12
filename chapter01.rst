@@ -142,12 +142,12 @@ an HTML template (``latest_books.html``)::
 
     # urls.py (the URL configuration)
 
-    from django.conf.urls import *
+    from django.conf.urls import url
     import views
 
-    urlpatterns = patterns('',
-        (r'^latest/$', views.latest_books),
-    )
+    urlpatterns = [
+        url(r'^latest/$', views.latest_books),
+    ]
 
 
     # latest_books.html (the template)

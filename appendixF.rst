@@ -193,7 +193,7 @@ directives::
 
 By default, ``dumpdata`` will format its output in JSON, but you can use 
 the ``--format`` option to specify another format. Currently supported formats
-are listed in :ref:`serialization-formats`.
+are listed in `serialization-formats`.
 
 By default, ``dumpdata`` will output all data on a single line. This isn't
 easy for humans to read, so you can use the ``--indent`` option to
