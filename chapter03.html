@@ -148,7 +148,7 @@ lines. If we ignore the commented-out code, here’s the essence of a URLconf:</
 <li>The first line imports two functions from the <code class="docutils literal"><span class="pre">django.conf.urls</span></code>
 module, which is Django’s URLconf infrastructure: <code class="docutils literal"><span class="pre">include</span></code>,
 and <code class="docutils literal"><span class="pre">urls</span></code>.</li>
-<li>The second line a list is saved
+<li>The second line a python <cite>list</cite> is saved
 into a variable called <code class="docutils literal"><span class="pre">urlpatterns</span></code>.</li>
 </ul>
 <p>The main thing to note here is the variable <code class="docutils literal"><span class="pre">urlpatterns</span></code>, which Django
@@ -157,7 +157,7 @@ between URLs and the code that handles those URLs. By default, as we can see,
 the URLconf is empty – your Django application is a blank slate. (As a side
 note, that’s how Django knew to show you the “Welcome to Django” page in the
 last chapter. If your URLconf is empty, Django assumes you just started a new
-project and, hence, displays that message.)</p>
+project and, hence, displays that message.)  The variable <code class="docutils literal"><span class="pre">urlpatterns</span></code> should be a Python list of <code class="docutils literal"><span class="pre">django.conf.urls.url()</span></code> instances.</p>
 <p>To add a URL and view to the URLconf, just add a mapping between a URL
 pattern and the view function. Here’s how to hook in our <code class="docutils literal"><span class="pre">hello</span></code> view:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="k">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
