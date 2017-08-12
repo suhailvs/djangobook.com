@@ -342,7 +342,7 @@ print by Apress.
 Required Django Version
 -----------------------
 
-This book covers Django 1.6.
+This book covers Django 1.11.
 
 Django's developers maintain backwards compatibility as much as possible, but
 occasionally introduce some backwards incompatible changes.  The changes in each

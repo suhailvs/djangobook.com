@@ -129,7 +129,7 @@ Let's step through this code one line at a time:
   module, which is Django's URLconf infrastructure: ``include``,
   and ``urls``.
 
-* The second line a list is saved
+* The second line a python `list` is saved
   into a variable called ``urlpatterns``. 
 
 The main thing to note here is the variable ``urlpatterns``, which Django
@@ -138,7 +138,8 @@ between URLs and the code that handles those URLs. By default, as we can see,
 the URLconf is empty -- your Django application is a blank slate. (As a side
 note, that's how Django knew to show you the "Welcome to Django" page in the
 last chapter. If your URLconf is empty, Django assumes you just started a new
-project and, hence, displays that message.)
+project and, hence, displays that message.)  The variable ``urlpatterns`` should be a Python list of ``django.conf.urls.url()`` instances.
+
 
 To add a URL and view to the URLconf, just add a mapping between a URL
 pattern and the view function. Here's how to hook in our ``hello`` view::

@@ -22,7 +22,7 @@ framework is to make sure you have Python installed.
 Python Versions
 ---------------
 
-The core Django framework (version 1.6+) works with any Python version from 2.6
+The core Django framework (version 1.11+) works with any Python version from 2.6
 to 3.3, inclusive. Django's optional GIS (Geographic Information Systems)
 support requires Python 2.6 to 2.7.
 
@@ -45,8 +45,8 @@ If you're on Linux or Mac OS X, you probably have Python already installed.
 Type ``python`` at a command prompt (or in Applications/Utilities/Terminal, in
 OS X). If you see something like this, then Python is installed::
 
-    Python 2.7.3rc2 (default, Apr 22 2014, 22:30:17)
-    [GCC 4.6.3] on linux2
+    Python 2.7.12 (default, Apr 22 2017, 22:30:17)
+    [GCC 5.4.3] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 
@@ -69,7 +69,7 @@ in the documentation and by members of the community.
 Installing an Official Release
 ------------------------------
 
-Official releases have a version number, such as 1.6.2, 1.6.1 or 1.6, and the latest
+Official releases have a version number, such as 1.11.2, 1.11.1 or 1.11, and the latest
 one is always available at http://www.djangoproject.com/download/.
 
 If you're on a Linux distribution that includes a package of Django, it's a
@@ -78,15 +78,15 @@ updates along with the rest of your system packages.
 
 If you don't have access to a prepackaged version, you can download and install
 the framework manually. To do so, first download the tarball, which will be
-named something like ``Django-1.6.tar.gz``. (It doesn't matter which
+named something like ``Django-1.11.tar.gz``. (It doesn't matter which
 local directory you download this file into; the installation process will put
 Django's files in the right place.) Then, unzip it and run ``setup.py install``,
 as you do with most Python libraries.
 
 Here's how that process looks on Unix systems::
 
-    tar xzvf Django-1.6.tar.gz
-    cd Django-1.6
+    tar xzvf Django-1.11.tar.gz
+    cd Django-1.11
     sudo python setup.py install
 
 On Windows, we recommend using 7-Zip (http://www.djangoproject.com/r/7zip/)
@@ -185,7 +185,7 @@ successful, you should be able to import the module ``django``:
 
     >>> import django
     >>> django.VERSION
-    (1, 6, 0, 'final', 0)
+    (1, 11, 3, 'final', 0)
 
 .. admonition:: Interactive Interpreter Examples
 
@@ -201,14 +201,14 @@ successful, you should be able to import the module ``django``:
     Multiline statements in the interactive interpreter are padded with three
     dots (``...``). For example::
 
-        >>> print """This is a
+        >>> print ("""This is a
         ... string that spans
-        ... three lines."""
+        ... three lines.""")
         This is a
         string that spans
         three lines.
         >>> def my_function(value):
-        ...     print value
+        ...     print (value)
         >>> my_function('hello')
         hello
 
@@ -438,8 +438,8 @@ You'll see something like this::
     Validating models...
 
     0 errors found
-    December 04, 2013 - 09:32:03
-    Django version 1.6, using settings 'mysite.settings'
+    August 12, 2017 - 09:32:03
+    Django version 1.11.3, using settings 'mysite.settings'
     Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
     
