@@ -3,9 +3,9 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Chapter 6: The Django Admin Site</title>
-    <link rel="stylesheet" href="static/reset-min.css" type="text/css">
-    <link rel="stylesheet" href="static/grids-min.css" type="text/css">
-    <link rel="stylesheet" href="static/djangobook.css" type="text/css">
+    <link rel="stylesheet" href="_static/reset-min.css" type="text/css">
+    <link rel="stylesheet" href="_static/grids-min.css" type="text/css">
+    <link rel="stylesheet" href="_static/djangobook.css" type="text/css">
     
   </head>
   <body>
@@ -132,7 +132,7 @@ should be pretty self-explanatory. Nevertheless, we’ll give you a quick
 walkthrough of the basic features.</p>
 <p>The first thing you’ll see is a login screen, as shown in Figure 6-1.</p>
 <div class="figure" id="id1">
-<img alt="Screenshot of Django's login page." src="images/login.png" />
+<img alt="Screenshot of Django's login page." src="_images/login.png" />
 <p class="caption"><span class="caption-text">Figure 6-1. Django’s login screen</span></p>
 </div>
 <p>Log in with the username and password you set up when you added your superuser.
@@ -144,7 +144,7 @@ site. At this point, because we haven’t activated any of our own models yet,
 the list is sparse: it includes only Groups and Users, which are the two
 default admin-editable models.</p>
 <div class="figure" id="id2">
-<img alt="Screenshot of the Django admin home page." src="images/admin_index.png" />
+<img alt="Screenshot of the Django admin home page." src="_images/admin_index.png" />
 <p class="caption"><span class="caption-text">Figure 6-2. The Django admin home page</span></p>
 </div>
 <p>Each type of data in the Django admin site has a <em>change list</em> and an
@@ -169,7 +169,7 @@ instead of English. Django ships with translations for dozens of languages.</p>
 <p>Click the “Change” link in the “Users” row to load the change list page for
 users.</p>
 <div class="figure" id="id3">
-<img alt="Screenshot of the user change list page." src="images/user_changelist.png" />
+<img alt="Screenshot of the user change list page." src="_images/user_changelist.png" />
 <p class="caption"><span class="caption-text">Figure 6-3. The user change list page</span></p>
 </div>
 <p>This page displays all users in the database; you can think of it as a
@@ -182,7 +182,7 @@ at the top lets you search by username.</p>
 <p>Click the username of the user you created, and you’ll see the edit form for
 that user.</p>
 <div class="figure" id="id4">
-<img alt="Screenshot of the user edit form" src="images/user_editform.png" />
+<img alt="Screenshot of the user edit form" src="_images/user_editform.png" />
 <p class="caption"><span class="caption-text">Figure 6-4. The user edit form</span></p>
 </div>
 <p>This page lets you change the attributes of the user, like the
@@ -203,7 +203,7 @@ to fill out.</p>
 you. Try leaving a required field blank or putting an invalid date into a date
 field, and you’ll see those errors when you try to save, as shown in Figure 6-5.</p>
 <div class="figure" id="id5">
-<img alt="Screenshot of an edit form displaying errors." src="images/user_editform_errors.png" />
+<img alt="Screenshot of an edit form displaying errors." src="_images/user_editform_errors.png" />
 <p class="caption"><span class="caption-text">Figure 6-5. An edit form displaying errors</span></p>
 </div>
 <p>When you edit an existing object, you’ll notice a History link in the
@@ -211,7 +211,7 @@ upper-right corner of the window. Every change made through the admin interface
 is logged, and you can examine this log by clicking the History link (see
 Figure 6-6).</p>
 <div class="figure" id="id6">
-<img alt="Screenshot of an object history page." src="images/user_history.png" />
+<img alt="Screenshot of an object history page." src="_images/user_history.png" />
 <p class="caption"><span class="caption-text">Figure 6-6. An object history page</span></p>
 </div>
 </div>
@@ -468,7 +468,7 @@ class Author(models.Model):
 <p>As a result, the change list for <code class="docutils literal"><span class="pre">Author</span></code> objects displays each other’s
 first name and last name together, as you can see in Figure 6-7.</p>
 <div class="figure" id="id7">
-<img alt="Screenshot of the author change list page." src="images/author_changelist1.png" />
+<img alt="Screenshot of the author change list page." src="_images/author_changelist1.png" />
 <p class="caption"><span class="caption-text">Figure 6-7. The author change list page</span></p>
 </div>
 <p>We can improve on this default behavior by adding a few other fields to the
@@ -513,7 +513,7 @@ now displaying three columns – the first name, last name and e-mail address.
 In addition, each of those columns is sortable by clicking on the column
 header. (See Figure 6-8.)</p>
 <div class="figure" id="id8">
-<img alt="Screenshot of the author change list page after list_display." src="images/author_changelist2.png" />
+<img alt="Screenshot of the author change list page after list_display." src="_images/author_changelist2.png" />
 <p class="caption"><span class="caption-text">Figure 6-8. The author change list page after list_display</span></p>
 </div>
 <p>Next, let’s add a simple search bar. Add <code class="docutils literal"><span class="pre">search_fields</span></code> to the
@@ -530,7 +530,7 @@ As a user might expect, this is case-insensitive and searches both fields, so
 searching for the string <code class="docutils literal"><span class="pre">&quot;bar&quot;</span></code> would find both an author with the first
 name Barney and an author with the last name Hobarson.</p>
 <div class="figure" id="id9">
-<img alt="Screenshot of the author change list page after search_fields." src="images/author_changelist3.png" />
+<img alt="Screenshot of the author change list page after search_fields." src="_images/author_changelist3.png" />
 <p class="caption"><span class="caption-text">Figure 6-9. The author change list page after search_fields</span></p>
 </div>
 <p>Next, let’s add some date filters to our <code class="docutils literal"><span class="pre">Book</span></code> model’s change list page:</p>
@@ -559,7 +559,7 @@ provides shortcuts to filter the list to “Today,” “Past 7 days,” “This
 and “This year” – shortcuts that Django’s developers have found hit the
 common cases for filtering by date. Figure 6-10 shows what that looks like.</p>
 <div class="figure" id="id10">
-<img alt="Screenshot of the book change list page after list_filter." src="images/book_changelist1.png" />
+<img alt="Screenshot of the book change list page after list_filter." src="_images/book_changelist1.png" />
 <p class="caption"><span class="caption-text">Figure 6-10. The book change list page after list_filter</span></p>
 </div>
 <p><code class="docutils literal"><span class="pre">list_filter</span></code> also works on fields of other types, not just <code class="docutils literal"><span class="pre">DateField</span></code>.
@@ -577,7 +577,7 @@ class BookAdmin(admin.ModelAdmin):
 at the top of the list, as shown in Figure 6-11. It starts with a list of
 available years, then drills down into months and individual days.</p>
 <div class="figure" id="id11">
-<img alt="Screenshot of the book change list page after date_hierarchy." src="images/book_changelist2.png" />
+<img alt="Screenshot of the book change list page after date_hierarchy." src="_images/book_changelist2.png" />
 <p class="caption"><span class="caption-text">Figure 6-11. The book change list page after date_hierarchy</span></p>
 </div>
 <p>Note that <code class="docutils literal"><span class="pre">date_hierarchy</span></code> takes a <em>string</em>, not a tuple, because only one
@@ -602,7 +602,7 @@ descending sort order.</p>
 “Publication date” header now includes a small arrow that indicates which way
 the records are sorted. (See Figure 6-12.)</p>
 <div class="figure" id="id12">
-<img alt="Screenshot of the book change list page after ordering." src="images/book_changelist3.png" />
+<img alt="Screenshot of the book change list page after ordering." src="_images/book_changelist3.png" />
 <p class="caption"><span class="caption-text">Figure 6-12. The book change list page after ordering</span></p>
 </div>
 <p>We’ve covered the main change list options here. Using these options, you can
@@ -674,7 +674,7 @@ uses a fancy JavaScript filter interface that lets you search through the
 options dynamically and move specific authors from “Available authors” to
 the “Chosen authors” box, and vice versa.</p>
 <div class="figure" id="id13">
-<img alt="Screenshot of the book edit form after adding filter_horizontal." src="images/book_editform1.png" />
+<img alt="Screenshot of the book edit form after adding filter_horizontal." src="_images/book_editform1.png" />
 <p class="caption"><span class="caption-text">Figure 6-13. The book edit form after adding filter_horizontal</span></p>
 </div>
 <p>We’d highly recommend using <code class="docutils literal"><span class="pre">filter_horizontal</span></code> for any <code class="docutils literal"><span class="pre">ManyToManyField</span></code>
@@ -707,7 +707,7 @@ class BookAdmin(admin.ModelAdmin):
     <strong>raw_id_fields = ('publisher',)</strong>
 </pre>
 <div class="figure" id="id14">
-<img alt="Screenshot of edit form after raw_id_fields." src="images/book_editform2.png" />
+<img alt="Screenshot of edit form after raw_id_fields." src="_images/book_editform2.png" />
 <p class="caption"><span class="caption-text">Figure 6-14. The book edit form after adding raw_id_fields</span></p>
 </div>
 <p>What do you enter in this input box? The database ID of the publisher. Given

@@ -1,1 +1,4 @@
 _sources/
+*.pyc
+_build/*
+*~
