@@ -1,0 +1,1566 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appendix E: Built-in Template Tags and Filters</title>
+    <link rel="stylesheet" href="_static/reset-min.css" type="text/css">
+    <link rel="stylesheet" href="_static/grids-min.css" type="text/css">
+    <link rel="stylesheet" href="_static/djangobook.css" type="text/css">
+    
+  </head>
+  <body>
+    <div id="doc" class="yui-t7">
+      <div id="hd">
+        <h1><a href="index.html">The Django Book</a></h1>
+        <div id="global-nav">
+            <a class="about" href="frontmatter.html">About</a>
+        </div>
+        
+<div class="nav">
+    
+        <a href='appendixD.html'>&laquo; previous</a> &loz;
+    
+    <a href="index.html">table of contents</a>
+    
+        &loz; <a href='appendixF.html'>next &raquo;</a>
+    
+</div>
+
+      </div>
+      <div id="bd">
+        <div id="yui-main">
+          <div class="yui-b">
+            
+  <div id="chapter-body"><div class="section" id="appendix-e-built-in-template-tags-and-filters">
+<h1>Appendix E: Built-in Template Tags and Filters<a class="headerlink" href="#appendix-e-built-in-template-tags-and-filters" title="Permalink to this headline">¶</a></h1>
+<p>Chapter 4 lists a number of the most useful built-in template tags and
+filters. However, Django ships with many more built-in tags and filters.
+This appendix covers them.</p>
+<div class="section" id="built-in-tag-reference">
+<h2>Built-in Tag Reference<a class="headerlink" href="#built-in-tag-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="autoescape">
+<h3>autoescape<a class="headerlink" href="#autoescape" title="Permalink to this headline">¶</a></h3>
+<p>Control the current auto-escaping behavior. This tag takes either <code class="docutils literal notranslate"><span class="pre">on</span></code> or
+<code class="docutils literal notranslate"><span class="pre">off</span></code> as an argument and that determines whether auto-escaping is in effect
+inside the block.</p>
+<p>When auto-escaping is in effect, all variable content has HTML escaping applied
+to it before placing the result into the output (but after any filters have
+been applied). This is equivalent to manually applying the <code class="docutils literal notranslate"><span class="pre">escape</span></code> filter
+to each variable.</p>
+<p>The only exceptions are variables that are already marked as “safe” from
+escaping, either by the code that populated the variable, or because it has had
+the <code class="docutils literal notranslate"><span class="pre">safe</span></code> or <code class="docutils literal notranslate"><span class="pre">escape</span></code> filters applied.</p>
+</div>
+<div class="section" id="block">
+<h3>block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
+<p>Define a block that can be overridden by child templates. See
+Chapter 4 for more information on template inheritance.</p>
+</div>
+<div class="section" id="comment">
+<h3>comment<a class="headerlink" href="#comment" title="Permalink to this headline">¶</a></h3>
+<p>Ignore everything between <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">comment</span> <span class="pre">%}</span></code> and <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">endcomment</span> <span class="pre">%}</span></code></p>
+</div>
+<div class="section" id="cycle">
+<h3>cycle<a class="headerlink" href="#cycle" title="Permalink to this headline">¶</a></h3>
+<p>Cycle among the given strings or variables each time this tag is encountered.</p>
+<p>Within a loop, cycles among the given strings each time through the
+loop:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">some_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;{</span><span class="si">% c</span><span class="s2">ycle &#39;row1&#39; &#39;row2&#39; %}&quot;</span><span class="o">&gt;</span>
+        <span class="o">...</span>
+    <span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You can use variables, too. For example, if you have two template variables,
+<code class="docutils literal notranslate"><span class="pre">rowvalue1</span></code> and <code class="docutils literal notranslate"><span class="pre">rowvalue2</span></code>, you can cycle between their values like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">some_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;{</span><span class="si">% c</span><span class="s2">ycle rowvalue1 rowvalue2 %}&quot;</span><span class="o">&gt;</span>
+        <span class="o">...</span>
+    <span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Yes, you can mix variables and strings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">some_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;{</span><span class="si">% c</span><span class="s2">ycle &#39;row1&#39; rowvalue2 &#39;row3&#39; %}&quot;</span><span class="o">&gt;</span>
+        <span class="o">...</span>
+    <span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In some cases you might want to refer to the next value of a cycle from
+outside of a loop. To do this, just give the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">cycle</span> <span class="pre">%}</span></code> tag a name, using
+“as”, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">cycle</span> <span class="s1">&#39;row1&#39;</span> <span class="s1">&#39;row2&#39;</span> <span class="k">as</span> <span class="n">rowcolors</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>From then on, you can insert the current value of the cycle wherever you’d like
+in your template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;{</span><span class="si">% c</span><span class="s2">ycle rowcolors %}&quot;</span><span class="o">&gt;...&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;{</span><span class="si">% c</span><span class="s2">ycle rowcolors %}&quot;</span><span class="o">&gt;...&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can use any number of values in a <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">cycle</span> <span class="pre">%}</span></code> tag, separated by spaces.
+Values enclosed in single (<code class="docutils literal notranslate"><span class="pre">'</span></code>) or double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) are treated as
+string literals, while values without quotes are treated as template variables.</p>
+<p>For backwards compatibility, the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">cycle</span> <span class="pre">%}</span></code> tag supports the much inferior
+old syntax from previous Django versions. You shouldn’t use this in any new
+projects, but for the sake of the people who are still using it, here’s what it
+looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">cycle</span> <span class="n">row1</span><span class="p">,</span><span class="n">row2</span><span class="p">,</span><span class="n">row3</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In this syntax, each value gets interpreted as a literal string, and there’s no
+way to specify variable values. Or literal commas. Or spaces. Did we mention
+you shouldn’t use this syntax in any new projects?</p>
+</div>
+<div class="section" id="debug">
+<h3>debug<a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h3>
+<p>Output a whole load of debugging information, including the current context and
+imported modules.</p>
+</div>
+<div class="section" id="extends">
+<h3>extends<a class="headerlink" href="#extends" title="Permalink to this headline">¶</a></h3>
+<p>Signal that this template extends a parent template.</p>
+<p>This tag can be used in two ways:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">extends</span> <span class="pre">&quot;base.html&quot;</span> <span class="pre">%}</span></code> (with quotes) uses the literal value
+<code class="docutils literal notranslate"><span class="pre">&quot;base.html&quot;</span></code> as the name of the parent template to extend.</li>
+<li><code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">extends</span> <span class="pre">variable</span> <span class="pre">%}</span></code> uses the value of <code class="docutils literal notranslate"><span class="pre">variable</span></code>. If the variable
+evaluates to a string, Django will use that string as the name of the
+parent template. If the variable evaluates to a <code class="docutils literal notranslate"><span class="pre">Template</span></code> object,
+Django will use that object as the parent template.</li>
+</ul>
+<p>See Chapter 4 for more information on template inheritance.</p>
+</div>
+<div class="section" id="filter">
+<h3>filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h3>
+<p>Filter the contents of the variable through variable filters.</p>
+<p>Filters can also be piped through each other, and they can have arguments –
+just like in variable syntax.</p>
+<p>Sample usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="nb">filter</span> <span class="n">force_escape</span><span class="o">|</span><span class="n">lower</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">This</span> <span class="n">text</span> <span class="n">will</span> <span class="n">be</span> <span class="n">HTML</span><span class="o">-</span><span class="n">escaped</span><span class="p">,</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">appear</span> <span class="ow">in</span> <span class="nb">all</span> <span class="n">lowercase</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfilter</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="firstof">
+<h3>firstof<a class="headerlink" href="#firstof" title="Permalink to this headline">¶</a></h3>
+<p>Outputs the first variable passed that is not False.  Outputs nothing if all the
+passed variables are False.</p>
+<p>Sample usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">firstof</span> <span class="n">var1</span> <span class="n">var2</span> <span class="n">var3</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">var1</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span> <span class="n">var1</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">else</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="k">if</span> <span class="n">var2</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span> <span class="n">var2</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">else</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="k">if</span> <span class="n">var3</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span> <span class="n">var3</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You can also use a literal string as a fallback value in case all
+passed variables are False:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">firstof</span> <span class="n">var1</span> <span class="n">var2</span> <span class="n">var3</span> <span class="s2">&quot;fallback value&quot;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="for">
+<h3>for<a class="headerlink" href="#for" title="Permalink to this headline">¶</a></h3>
+<p>Loop over each item in an array.  For example, to display a list of athletes
+provided in <code class="docutils literal notranslate"><span class="pre">athlete_list</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">athlete</span> <span class="ow">in</span> <span class="n">athlete_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">athlete</span><span class="o">.</span><span class="n">name</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can loop over a list in reverse by using <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">obj</span> <span class="pre">in</span> <span class="pre">list</span> <span class="pre">reversed</span> <span class="pre">%}</span></code>.</p>
+<p>If you need to loop over a list of lists, you can unpack the values
+in each sub-list into individual variables. For example, if your context
+contains a list of (x,y) coordinates called <code class="docutils literal notranslate"><span class="pre">points</span></code>, you could use the
+following to output the list of points:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">There</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">point</span> <span class="n">at</span> <span class="p">{{</span> <span class="n">x</span> <span class="p">}},{{</span> <span class="n">y</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This can also be useful if you need to access the items in a dictionary.
+For example, if your context contained a dictionary <code class="docutils literal notranslate"><span class="pre">data</span></code>, the following
+would display the keys and values of the dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span> <span class="n">key</span> <span class="p">}}:</span> <span class="p">{{</span> <span class="n">value</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">for</span></code> loop sets a number of variables available within the loop (see
+Table E-1).</p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-text">Table E-1. Variables Available Inside {% for %} Loops</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Variable</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">forloop.counter</span></code></td>
+<td>The current iteration of the loop (1-indexed)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">forloop.counter0</span></code></td>
+<td>The current iteration of the loop (0-indexed)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">forloop.revcounter</span></code></td>
+<td>The number of iterations from the end of the
+loop (1-indexed)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">forloop.revcounter0</span></code></td>
+<td>The number of iterations from the end of the
+loop (0-indexed)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">forloop.first</span></code></td>
+<td>True if this is the first time through the loop</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">forloop.last</span></code></td>
+<td>True if this is the last time through the loop</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">forloop.parentloop</span></code></td>
+<td>For nested loops, this is the loop “above” the
+current one</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">for</span></code> tag can take an optional <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">empty</span> <span class="pre">%}</span></code> clause that will be
+displayed if the given array is empty or could not be found:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;ul&gt;
+{% for athlete in athlete_list %}
+    &lt;li&gt;{{ athlete.name }}&lt;/li&gt;
+{% empty %}
+    &lt;li&gt;Sorry, no athlete in this list!&lt;/li&gt;
+{% endfor %}
+&lt;ul&gt;
+</pre></div>
+</div>
+<p>The above is equivalent to – but shorter, cleaner, and possibly faster
+than – the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+  <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">athlete</span> <span class="ow">in</span> <span class="n">athlete_list</span> <span class="o">%</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">athlete</span><span class="o">.</span><span class="n">name</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+  <span class="p">{</span><span class="o">%</span> <span class="k">else</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">Sorry</span><span class="p">,</span> <span class="n">no</span> <span class="n">athletes</span> <span class="ow">in</span> <span class="n">this</span> <span class="nb">list</span><span class="o">.&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+  <span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="if">
+<h3>if<a class="headerlink" href="#if" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">%}</span></code> tag evaluates a variable, and if that variable is “true” (i.e.
+exists, is not empty, and is not a false boolean value) the contents of the
+block are output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">Number</span> <span class="n">of</span> <span class="n">athletes</span><span class="p">:</span> <span class="p">{{</span> <span class="n">athlete_list</span><span class="o">|</span><span class="n">length</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">else</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">No</span> <span class="n">athletes</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above, if <code class="docutils literal notranslate"><span class="pre">athlete_list</span></code> is not empty, the number of athletes will be
+displayed by the <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">athlete_list|length</span> <span class="pre">}}</span></code> variable.</p>
+<p>As you can see, the <code class="docutils literal notranslate"><span class="pre">if</span></code> tag can take an optional <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">else</span> <span class="pre">%}</span></code> clause that
+will be displayed if the test fails.</p>
+<p><code class="docutils literal notranslate"><span class="pre">if</span></code> tags may use <code class="docutils literal notranslate"><span class="pre">and</span></code>, <code class="docutils literal notranslate"><span class="pre">or</span></code> or <code class="docutils literal notranslate"><span class="pre">not</span></code> to test a number of variables or
+to negate a given variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="ow">and</span> <span class="n">coach_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">Both</span> <span class="n">athletes</span> <span class="ow">and</span> <span class="n">coaches</span> <span class="n">are</span> <span class="n">available</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">athlete_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">There</span> <span class="n">are</span> <span class="n">no</span> <span class="n">athletes</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="ow">or</span> <span class="n">coach_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">There</span> <span class="n">are</span> <span class="n">some</span> <span class="n">athletes</span> <span class="ow">or</span> <span class="n">some</span> <span class="n">coaches</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">athlete_list</span> <span class="ow">or</span> <span class="n">coach_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">There</span> <span class="n">are</span> <span class="n">no</span> <span class="n">athletes</span> <span class="ow">or</span> <span class="n">there</span> <span class="n">are</span> <span class="n">some</span> <span class="n">coaches</span> <span class="p">(</span><span class="n">OK</span><span class="p">,</span> <span class="n">so</span>
+    <span class="n">writing</span> <span class="n">English</span> <span class="n">translations</span> <span class="n">of</span> <span class="n">boolean</span> <span class="n">logic</span> <span class="n">sounds</span>
+    <span class="n">stupid</span><span class="p">;</span> <span class="n">it</span><span class="s1">&#39;s not our fault).</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">coach_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">There</span> <span class="n">are</span> <span class="n">some</span> <span class="n">athletes</span> <span class="ow">and</span> <span class="n">absolutely</span> <span class="n">no</span> <span class="n">coaches</span><span class="o">.</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">if</span></code> tags don’t allow <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> clauses within the same tag, because
+the order of logic would be ambiguous. For example, this is invalid:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="ow">and</span> <span class="n">coach_list</span> <span class="ow">or</span> <span class="n">cheerleader_list</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you need to combine <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> to do advanced logic, just use nested
+<code class="docutils literal notranslate"><span class="pre">if</span></code> tags. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{% if athlete_list %}
+    {% if coach_list or cheerleader_list %}
+        We have athletes, and either coaches or cheerleaders!
+    {% endif %}
+{% endif %}
+</pre></div>
+</div>
+<p>Multiple uses of the same logical operator are fine, as long as you use the
+same operator. For example, this is valid:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">athlete_list</span> <span class="ow">or</span> <span class="n">coach_list</span> <span class="ow">or</span> <span class="n">parent_list</span> <span class="ow">or</span> <span class="n">teacher_list</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ifchanged">
+<h3>ifchanged<a class="headerlink" href="#ifchanged" title="Permalink to this headline">¶</a></h3>
+<p>Check if a value has changed from the last iteration of a loop.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ifchanged</span></code> tag is used within a loop. It has two possible uses.</p>
+<ol class="arabic">
+<li><p class="first">Checks its own rendered contents against its previous state and only
+displays the content if it has changed. For example, this displays a list of
+days, only displaying the month if it changes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Archive</span> <span class="k">for</span> <span class="p">{{</span> <span class="n">year</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">days</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">ifchanged</span> <span class="o">%</span><span class="p">}</span><span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">date</span><span class="o">|</span><span class="n">date</span><span class="p">:</span><span class="s2">&quot;F&quot;</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">h3</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="n">endifchanged</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;{{ date|date:&quot;</span><span class="n">M</span><span class="o">/</span><span class="n">d</span><span class="s2">&quot;|lower }}/&quot;</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">date</span><span class="o">|</span><span class="n">date</span><span class="p">:</span><span class="s2">&quot;j&quot;</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If given a variable, check whether that variable has changed. For
+example, the following shows the date every time it changes, but
+only shows the hour if both the hour and the date has changed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">days</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">ifchanged</span> <span class="n">date</span><span class="o">.</span><span class="n">date</span> <span class="o">%</span><span class="p">}</span> <span class="p">{{</span> <span class="n">date</span><span class="o">.</span><span class="n">date</span> <span class="p">}}</span> <span class="p">{</span><span class="o">%</span> <span class="n">endifchanged</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">ifchanged</span> <span class="n">date</span><span class="o">.</span><span class="n">hour</span> <span class="n">date</span><span class="o">.</span><span class="n">date</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{{</span> <span class="n">date</span><span class="o">.</span><span class="n">hour</span> <span class="p">}}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">endifchanged</span> <span class="o">%</span><span class="p">}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">ifchanged</span></code> tag can also take an optional <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">else</span> <span class="pre">%}</span></code> clause that
+will be displayed if the value has not changed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">div</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;background-color:</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">ifchanged</span> <span class="n">match</span><span class="o">.</span><span class="n">ballot_id</span> <span class="o">%</span><span class="p">}</span>
+            <span class="p">{</span><span class="o">%</span> <span class="n">cycle</span> <span class="n">red</span><span class="p">,</span><span class="n">blue</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">else</span> <span class="o">%</span><span class="p">}</span>
+            <span class="n">grey</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endifchanged</span> <span class="o">%</span><span class="p">}</span>
+    <span class="s2">&quot;&gt;{{ match }}&lt;/div&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ifequal">
+<h3>ifequal<a class="headerlink" href="#ifequal" title="Permalink to this headline">¶</a></h3>
+<p>Output the contents of the block if the two arguments equal each other.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">ifequal</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="n">comment</span><span class="o">.</span><span class="n">user_id</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endifequal</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>As in the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">%}</span></code> tag, an <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">else</span> <span class="pre">%}</span></code> clause is optional.</p>
+<p>The arguments can be hard-coded strings, so the following is valid:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">ifequal</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="s2">&quot;adrian&quot;</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endifequal</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>It is only possible to compare an argument to template variables or strings.
+You cannot check for equality with Python objects such as <code class="docutils literal notranslate"><span class="pre">True</span></code> or
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.  If you need to test if something is true or false, use the <code class="docutils literal notranslate"><span class="pre">if</span></code>
+tag instead.</p>
+</div>
+<div class="section" id="ifnotequal">
+<h3>ifnotequal<a class="headerlink" href="#ifnotequal" title="Permalink to this headline">¶</a></h3>
+<p>Just like <code class="docutils literal notranslate"><span class="pre">ifequal</span></code>, except it tests that the two arguments are not equal.</p>
+</div>
+<div class="section" id="include">
+<h3>include<a class="headerlink" href="#include" title="Permalink to this headline">¶</a></h3>
+<p>Loads a template and renders it with the current context. This is a way of
+“including” other templates within a template.</p>
+<p>The template name can either be a variable or a hard-coded (quoted) string,
+in either single or double quotes.</p>
+<p>This example includes the contents of the template <code class="docutils literal notranslate"><span class="pre">&quot;foo/bar.html&quot;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;foo/bar.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This example includes the contents of the template whose name is contained in
+the variable <code class="docutils literal notranslate"><span class="pre">template_name</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="n">template_name</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>An included template is rendered with the context of the template that’s
+including it. This example produces the output <code class="docutils literal notranslate"><span class="pre">&quot;Hello,</span> <span class="pre">John&quot;</span></code>:</p>
+<ul>
+<li><p class="first">Context: variable <code class="docutils literal notranslate"><span class="pre">person</span></code> is set to <code class="docutils literal notranslate"><span class="pre">&quot;john&quot;</span></code>.</p>
+</li>
+<li><p class="first">Template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">include</span> <span class="s2">&quot;name_snippet.html&quot;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">name_snippet.html</span></code> template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Hello</span><span class="p">,</span> <span class="p">{{</span> <span class="n">person</span> <span class="p">}}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>See also: <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">ssi</span> <span class="pre">%}</span></code>.</p>
+</div>
+<div class="section" id="load">
+<h3>load<a class="headerlink" href="#load" title="Permalink to this headline">¶</a></h3>
+<p>Load a custom template tag set. See Chapter 9 for more information on custom
+template libraries.</p>
+</div>
+<div class="section" id="now">
+<h3>now<a class="headerlink" href="#now" title="Permalink to this headline">¶</a></h3>
+<p>Display the date, formatted according to the given string.</p>
+<p>Uses the same format as PHP’s <code class="docutils literal notranslate"><span class="pre">date()</span></code> function (<a class="reference external" href="http://php.net/date">http://php.net/date</a>)
+with some custom extensions.</p>
+<p>Table E-2 shows the available format strings.</p>
+<table border="1" class="docutils" id="id2">
+<caption><span class="caption-text">Table E-2. Available Date Format Strings</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="12%" />
+<col width="31%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Format character</th>
+<th class="head">Description</th>
+<th class="head">Example output</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a</td>
+<td><code class="docutils literal notranslate"><span class="pre">'a.m.'</span></code> or <code class="docutils literal notranslate"><span class="pre">'p.m.'</span></code> (Note that
+this is slightly different than PHP’s
+output, because this includes periods
+to match Associated Press style.)</td>
+<td><code class="docutils literal notranslate"><span class="pre">'a.m.'</span></code></td>
+</tr>
+<tr class="row-odd"><td>A</td>
+<td><code class="docutils literal notranslate"><span class="pre">'AM'</span></code> or <code class="docutils literal notranslate"><span class="pre">'PM'</span></code>.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'AM'</span></code></td>
+</tr>
+<tr class="row-even"><td>b</td>
+<td>Month, textual, 3 letters, lowercase.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'jan'</span></code></td>
+</tr>
+<tr class="row-odd"><td>B</td>
+<td>Not implemented.</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>d</td>
+<td>Day of the month, 2 digits with
+leading zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'01'</span></code> to <code class="docutils literal notranslate"><span class="pre">'31'</span></code></td>
+</tr>
+<tr class="row-odd"><td>D</td>
+<td>Day of the week, textual, 3 letters.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'Fri'</span></code></td>
+</tr>
+<tr class="row-even"><td>f</td>
+<td>Time, in 12-hour hours and minutes,
+with minutes left off if they’re zero.
+Proprietary extension.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'1:30'</span></code></td>
+</tr>
+<tr class="row-odd"><td>F</td>
+<td>Month, textual, long.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'January'</span></code></td>
+</tr>
+<tr class="row-even"><td>g</td>
+<td>Hour, 12-hour format without leading
+zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1'</span></code> to <code class="docutils literal notranslate"><span class="pre">'12'</span></code></td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td>Hour, 24-hour format without leading
+zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'0'</span></code> to <code class="docutils literal notranslate"><span class="pre">'23'</span></code></td>
+</tr>
+<tr class="row-even"><td>h</td>
+<td>Hour, 12-hour format.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'01'</span></code> to <code class="docutils literal notranslate"><span class="pre">'12'</span></code></td>
+</tr>
+<tr class="row-odd"><td>H</td>
+<td>Hour, 24-hour format.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'00'</span></code> to <code class="docutils literal notranslate"><span class="pre">'23'</span></code></td>
+</tr>
+<tr class="row-even"><td>i</td>
+<td>Minutes.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'00'</span></code> to <code class="docutils literal notranslate"><span class="pre">'59'</span></code></td>
+</tr>
+<tr class="row-odd"><td>I</td>
+<td>Not implemented.</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>j</td>
+<td>Day of the month without leading
+zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1'</span></code> to <code class="docutils literal notranslate"><span class="pre">'31'</span></code></td>
+</tr>
+<tr class="row-odd"><td>l</td>
+<td>Day of the week, textual, long.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'Friday'</span></code></td>
+</tr>
+<tr class="row-even"><td>L</td>
+<td>Boolean for whether it’s a leap year.</td>
+<td><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code></td>
+</tr>
+<tr class="row-odd"><td>m</td>
+<td>Month, 2 digits with leading zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'01'</span></code> to <code class="docutils literal notranslate"><span class="pre">'12'</span></code></td>
+</tr>
+<tr class="row-even"><td>M</td>
+<td>Month, textual, 3 letters.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'Jan'</span></code></td>
+</tr>
+<tr class="row-odd"><td>n</td>
+<td>Month without leading zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1'</span></code> to <code class="docutils literal notranslate"><span class="pre">'12'</span></code></td>
+</tr>
+<tr class="row-even"><td>N</td>
+<td>Month abbreviation in Associated Press
+style. Proprietary extension.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'Jan.'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Feb.'</span></code>, <code class="docutils literal notranslate"><span class="pre">'March'</span></code>, <code class="docutils literal notranslate"><span class="pre">'May'</span></code></td>
+</tr>
+<tr class="row-odd"><td>O</td>
+<td>Difference to Greenwich time in hours.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'+0200'</span></code></td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>Time, in 12-hour hours, minutes and
+‘a.m.’/’p.m.’, with minutes left off
+if they’re zero and the special-case
+strings ‘midnight’ and ‘noon’ if
+appropriate. Proprietary extension.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1</span> <span class="pre">a.m.'</span></code>, <code class="docutils literal notranslate"><span class="pre">'1:30</span> <span class="pre">p.m.'</span></code>, <code class="docutils literal notranslate"><span class="pre">'midnight'</span></code>, <code class="docutils literal notranslate"><span class="pre">'noon'</span></code>, <code class="docutils literal notranslate"><span class="pre">'12:30</span> <span class="pre">p.m.'</span></code></td>
+</tr>
+<tr class="row-odd"><td>r</td>
+<td>RFC 2822 formatted date.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'Thu,</span> <span class="pre">21</span> <span class="pre">Dec</span> <span class="pre">2000</span> <span class="pre">16:01:07</span> <span class="pre">+0200'</span></code></td>
+</tr>
+<tr class="row-even"><td>s</td>
+<td>Seconds, 2 digits with leading zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'00'</span></code> to <code class="docutils literal notranslate"><span class="pre">'59'</span></code></td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>English ordinal suffix for day of the
+month, 2 characters.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'st'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nd'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rd'</span></code> or <code class="docutils literal notranslate"><span class="pre">'th'</span></code></td>
+</tr>
+<tr class="row-even"><td>t</td>
+<td>Number of days in the given month.</td>
+<td><code class="docutils literal notranslate"><span class="pre">28</span></code> to <code class="docutils literal notranslate"><span class="pre">31</span></code></td>
+</tr>
+<tr class="row-odd"><td>T</td>
+<td>Time zone of this machine.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'EST'</span></code>, <code class="docutils literal notranslate"><span class="pre">'MDT'</span></code></td>
+</tr>
+<tr class="row-even"><td>U</td>
+<td>Not implemented.</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>w</td>
+<td>Day of the week, digits without
+leading zeros.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'0'</span></code> (Sunday) to <code class="docutils literal notranslate"><span class="pre">'6'</span></code> (Saturday)</td>
+</tr>
+<tr class="row-even"><td>W</td>
+<td>ISO-8601 week number of year, with
+weeks starting on Monday.</td>
+<td><code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">53</span></code></td>
+</tr>
+<tr class="row-odd"><td>y</td>
+<td>Year, 2 digits.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'99'</span></code></td>
+</tr>
+<tr class="row-even"><td>Y</td>
+<td>Year, 4 digits.</td>
+<td><code class="docutils literal notranslate"><span class="pre">'1999'</span></code></td>
+</tr>
+<tr class="row-odd"><td>z</td>
+<td>Day of the year.</td>
+<td><code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">365</span></code></td>
+</tr>
+<tr class="row-even"><td>Z</td>
+<td>Time zone offset in seconds. The
+offset for timezones west of UTC is
+always negative, and for those east of
+UTC is always positive.</td>
+<td><code class="docutils literal notranslate"><span class="pre">-43200</span></code> to <code class="docutils literal notranslate"><span class="pre">43200</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">It</span> <span class="ow">is</span> <span class="p">{</span><span class="o">%</span> <span class="n">now</span> <span class="s2">&quot;jS F Y H:i&quot;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that you can backslash-escape a format string if you want to use the
+“raw” value. In this example, “f” is backslash-escaped, because otherwise
+“f” is a format string that displays the time. The “o” doesn’t need to be
+escaped, because it’s not a format character:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">It</span> <span class="ow">is</span> <span class="n">the</span> <span class="p">{</span><span class="o">%</span> <span class="n">now</span> <span class="s2">&quot;jS o</span><span class="se">\f</span><span class="s2"> F&quot;</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This would display as “It is the 4th of September”.</p>
+</div>
+<div class="section" id="regroup">
+<h3>regroup<a class="headerlink" href="#regroup" title="Permalink to this headline">¶</a></h3>
+<p>Regroup a list of alike objects by a common attribute.</p>
+<p>This complex tag is best illustrated by use of an example: say that <code class="docutils literal notranslate"><span class="pre">people</span></code>
+is a list of people represented by dictionaries with <code class="docutils literal notranslate"><span class="pre">first_name</span></code>,
+<code class="docutils literal notranslate"><span class="pre">last_name</span></code>, and <code class="docutils literal notranslate"><span class="pre">gender</span></code> keys:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">people</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;George&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bush&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bill&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Clinton&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Margaret&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Thatcher&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Condoleezza&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Rice&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pat&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>…and you’d like to display a hierarchical list that is ordered by gender,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">Male</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">George</span> <span class="n">Bush</span>
+    <span class="o">*</span> <span class="n">Bill</span> <span class="n">Clinton</span>
+<span class="o">*</span> <span class="n">Female</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Margaret</span> <span class="n">Thatcher</span>
+    <span class="o">*</span> <span class="n">Condoleezza</span> <span class="n">Rice</span>
+<span class="o">*</span> <span class="n">Unknown</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Pat</span> <span class="n">Smith</span>
+</pre></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">regroup</span> <span class="pre">%}</span></code> tag to group the list of people by gender.
+The following snippet of template code would accomplish this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">regroup</span> <span class="n">people</span> <span class="n">by</span> <span class="n">gender</span> <span class="k">as</span> <span class="n">gender_list</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">gender</span> <span class="ow">in</span> <span class="n">gender_list</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">gender</span><span class="o">.</span><span class="n">grouper</span> <span class="p">}}</span>
+    <span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">gender</span><span class="o">.</span><span class="n">list</span> <span class="o">%</span><span class="p">}</span>
+        <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="p">{{</span> <span class="n">item</span><span class="o">.</span><span class="n">first_name</span> <span class="p">}}</span> <span class="p">{{</span> <span class="n">item</span><span class="o">.</span><span class="n">last_name</span> <span class="p">}}</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Let’s walk through this example. <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">regroup</span> <span class="pre">%}</span></code> takes three arguments: the
+list you want to regroup, the attribute to group by, and the name of the
+resulting list. Here, we’re regrouping the <code class="docutils literal notranslate"><span class="pre">people</span></code> list by the <code class="docutils literal notranslate"><span class="pre">gender</span></code>
+attribute and calling the result <code class="docutils literal notranslate"><span class="pre">gender_list</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">regroup</span> <span class="pre">%}</span></code> produces a list (in this case, <code class="docutils literal notranslate"><span class="pre">gender_list</span></code>) of
+<strong>group objects</strong>. Each group object has two attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">grouper</span></code> – the item that was grouped by (e.g., the string “Male” or
+“Female”).</li>
+<li><code class="docutils literal notranslate"><span class="pre">list</span></code> – a list of all items in this group (e.g., a list of all people
+with gender=’Male’).</li>
+</ul>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">regroup</span> <span class="pre">%}</span></code> does not order its input! Our example relies on
+the fact that the <code class="docutils literal notranslate"><span class="pre">people</span></code> list was ordered by <code class="docutils literal notranslate"><span class="pre">gender</span></code> in the first place.
+If the <code class="docutils literal notranslate"><span class="pre">people</span></code> list did <em>not</em> order its members by <code class="docutils literal notranslate"><span class="pre">gender</span></code>, the regrouping
+would naively display more than one group for a single gender. For example,
+say the <code class="docutils literal notranslate"><span class="pre">people</span></code> list was set to this (note that the males are not grouped
+together):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">people</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bill&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Clinton&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Pat&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Margaret&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Thatcher&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;George&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bush&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Condoleezza&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Rice&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>With this input for <code class="docutils literal notranslate"><span class="pre">people</span></code>, the example <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">regroup</span> <span class="pre">%}</span></code> template code
+above would result in the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">Male</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Bill</span> <span class="n">Clinton</span>
+<span class="o">*</span> <span class="n">Unknown</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Pat</span> <span class="n">Smith</span>
+<span class="o">*</span> <span class="n">Female</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Margaret</span> <span class="n">Thatcher</span>
+<span class="o">*</span> <span class="n">Male</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">George</span> <span class="n">Bush</span>
+<span class="o">*</span> <span class="n">Female</span><span class="p">:</span>
+    <span class="o">*</span> <span class="n">Condoleezza</span> <span class="n">Rice</span>
+</pre></div>
+</div>
+<p>The easiest solution to this gotcha is to make sure in your view code that the
+data is ordered according to how you want to display it.</p>
+<p>Another solution is to sort the data in the template using the <code class="docutils literal notranslate"><span class="pre">dictsort</span></code>
+filter, if your data is in a list of dictionaries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">regroup</span> <span class="n">people</span><span class="o">|</span><span class="n">dictsort</span><span class="p">:</span><span class="s2">&quot;gender&quot;</span> <span class="n">by</span> <span class="n">gender</span> <span class="k">as</span> <span class="n">gender_list</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="spaceless">
+<h3>spaceless<a class="headerlink" href="#spaceless" title="Permalink to this headline">¶</a></h3>
+<p>Removes whitespace between HTML tags. This includes tab
+characters and newlines.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">spaceless</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;foo/&quot;</span><span class="o">&gt;</span><span class="n">Foo</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endspaceless</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This example would return this HTML:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;foo/&quot;</span><span class="o">&gt;</span><span class="n">Foo</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Only space between <em>tags</em> is removed – not space between tags and text. In
+this example, the space around <code class="docutils literal notranslate"><span class="pre">Hello</span></code> won’t be stripped:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">spaceless</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span>
+        <span class="n">Hello</span>
+    <span class="o">&lt;/</span><span class="n">strong</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endspaceless</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ssi">
+<h3>ssi<a class="headerlink" href="#ssi" title="Permalink to this headline">¶</a></h3>
+<p>Output the contents of a given file into the page.</p>
+<p>Like a simple “include” tag, <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">ssi</span> <span class="pre">%}</span></code> includes the contents of another
+file – which must be specified using an absolute path – in the current
+page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">ssi</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">ljworld</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">includes</span><span class="o">/</span><span class="n">right_generic</span><span class="o">.</span><span class="n">html</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If the optional “parsed” parameter is given, the contents of the included
+file are evaluated as template code, within the current context:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">ssi</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">ljworld</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">includes</span><span class="o">/</span><span class="n">right_generic</span><span class="o">.</span><span class="n">html</span> <span class="n">parsed</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that if you use <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">ssi</span> <span class="pre">%}</span></code>, you’ll need to define
+<code class="docutils literal notranslate"><span class="pre">ALLOWED_INCLUDE_ROOTS</span></code> in your Django settings, as a security measure.</p>
+<p>See also: <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">include</span> <span class="pre">%}</span></code>.</p>
+</div>
+<div class="section" id="templatetag">
+<h3>templatetag<a class="headerlink" href="#templatetag" title="Permalink to this headline">¶</a></h3>
+<p>Output one of the syntax characters used to compose template tags.</p>
+<p>Since the template system has no concept of “escaping”, to display one of the
+bits used in template tags, you must use the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">templatetag</span> <span class="pre">%}</span></code> tag.</p>
+<p>See Table E-3 for the available arguments.</p>
+<table border="1" class="docutils" id="id3">
+<caption><span class="caption-text">Table E-3. Available Arguments for templatetag Filter</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="72%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Outputs</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">openblock</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{%</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">closeblock</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">%}</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">openvariable</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">closevariable</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">}}</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">openbrace</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">closebrace</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">opencomment</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{#</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">closecomment</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">#}</span></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="url">
+<h3>url<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<p>Returns an absolute URL (i.e., a URL without the domain name) matching a given
+view function and optional parameters. This is a way to output links without
+violating the DRY principle by having to hard-code URLs in your templates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">url</span> <span class="n">path</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">some_view</span> <span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">,</span><span class="n">name1</span><span class="o">=</span><span class="n">value1</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The first argument is a path to a view function in the format
+<code class="docutils literal notranslate"><span class="pre">package.package.module.function</span></code>. Additional arguments are optional and
+should be comma-separated values that will be used as positional and keyword
+arguments in the URL. All arguments required by the URLconf should be present.</p>
+<p>For example, suppose you have a view, <code class="docutils literal notranslate"><span class="pre">app_views.client</span></code>, whose URLconf
+takes a client ID (here, <code class="docutils literal notranslate"><span class="pre">client()</span></code> is a method inside the views file
+<code class="docutils literal notranslate"><span class="pre">app_views.py</span></code>). The URLconf line might look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;^client/(\d+)/$&#39;</span><span class="p">,</span> <span class="s1">&#39;app_views.client&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If this app’s URLconf is included into the project’s URLconf under a path
+such as this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;^clients/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;project_name.app_name.urls&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>…then, in a template, you can create a link to this view like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">url</span> <span class="n">app_views</span><span class="o">.</span><span class="n">client</span> <span class="n">client</span><span class="o">.</span><span class="n">id</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The template tag will output the string <code class="docutils literal notranslate"><span class="pre">/clients/client/123/</span></code>.</p>
+</div>
+<div class="section" id="widthratio">
+<h3>widthratio<a class="headerlink" href="#widthratio" title="Permalink to this headline">¶</a></h3>
+<p>For creating bar charts and such, this tag calculates the ratio of a given value
+to a maximum value, and then applies that ratio to a constant.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;bar.gif&quot;</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;10&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;{% widthratio this_value max_value 100 %}&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+</div>
+<p>Above, if <code class="docutils literal notranslate"><span class="pre">this_value</span></code> is 175 and <code class="docutils literal notranslate"><span class="pre">max_value</span></code> is 200, the image in the
+above example will be 88 pixels wide (because 175/200 = .875; .875 * 100 = 87.5
+which is rounded up to 88).</p>
+</div>
+<div class="section" id="with">
+<h3>with<a class="headerlink" href="#with" title="Permalink to this headline">¶</a></h3>
+<p>Caches a complex variable under a simpler name. This is useful when accessing
+an “expensive” method (e.g., one that hits the database) multiple times.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">with</span> <span class="n">business</span><span class="o">.</span><span class="n">employees</span><span class="o">.</span><span class="n">count</span> <span class="k">as</span> <span class="n">total</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span> <span class="n">total</span> <span class="p">}}</span> <span class="n">employee</span><span class="p">{{</span> <span class="n">total</span><span class="o">|</span><span class="n">pluralize</span> <span class="p">}}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endwith</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The populated variable (in the example above, <code class="docutils literal notranslate"><span class="pre">total</span></code>) is only available
+between the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">with</span> <span class="pre">%}</span></code> and <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">endwith</span> <span class="pre">%}</span></code> tags.</p>
+</div>
+</div>
+<div class="section" id="built-in-filter-reference">
+<h2>Built-in Filter Reference<a class="headerlink" href="#built-in-filter-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="add">
+<h3>add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h3>
+<p>Adds the argument to the value.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">add</span><span class="p">:</span><span class="s2">&quot;2&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">4</span></code>, then the output will be <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p>
+</div>
+<div class="section" id="addslashes">
+<h3>addslashes<a class="headerlink" href="#addslashes" title="Permalink to this headline">¶</a></h3>
+<p>Adds slashes before quotes. Useful for escaping strings in CSV, for example.</p>
+</div>
+<div class="section" id="capfirst">
+<h3>capfirst<a class="headerlink" href="#capfirst" title="Permalink to this headline">¶</a></h3>
+<p>Capitalizes the first character of the value.</p>
+</div>
+<div class="section" id="center">
+<h3>center<a class="headerlink" href="#center" title="Permalink to this headline">¶</a></h3>
+<p>Centers the value in a field of a given width.</p>
+</div>
+<div class="section" id="cut">
+<h3>cut<a class="headerlink" href="#cut" title="Permalink to this headline">¶</a></h3>
+<p>Removes all values of arg from the given string.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">cut</span><span class="p">:</span><span class="s2">&quot; &quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;String</span> <span class="pre">with</span> <span class="pre">spaces&quot;</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&quot;Stringwithspaces&quot;</span></code>.</p>
+</div>
+<div class="section" id="date">
+<h3>date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h3>
+<p>Formats a date according to the given format (same as the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">now</span> <span class="pre">%}</span></code> tag).</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">date</span><span class="p">:</span><span class="s2">&quot;D d M Y&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is a <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object (e.g., the result of
+<code class="docutils literal notranslate"><span class="pre">datetime.datetime.now()</span></code>), the output will be the string
+<code class="docutils literal notranslate"><span class="pre">'Wed</span> <span class="pre">09</span> <span class="pre">Jan</span> <span class="pre">2008'</span></code>.</p>
+<p>When used without a format string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">date</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>…the formatting string defined in the <code class="docutils literal notranslate"><span class="pre">DATE_FORMAT</span></code> setting will be
+used.</p>
+</div>
+<div class="section" id="default">
+<h3>default<a class="headerlink" href="#default" title="Permalink to this headline">¶</a></h3>
+<p>If value evaluates to <code class="docutils literal notranslate"><span class="pre">False</span></code>, use given default. Otherwise, use the value.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">default</span><span class="p">:</span><span class="s2">&quot;nothing&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> (the empty string), the output will be <code class="docutils literal notranslate"><span class="pre">nothing</span></code>.</p>
+</div>
+<div class="section" id="default-if-none">
+<h3>default_if_none<a class="headerlink" href="#default-if-none" title="Permalink to this headline">¶</a></h3>
+<p>If (and only if) value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, use given default. Otherwise, use the
+value.</p>
+<p>Note that if an empty string is given, the default value will <em>not</em> be used.
+Use the <code class="docutils literal notranslate"><span class="pre">default</span></code> filter if you want to fallback for empty strings.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">default_if_none</span><span class="p">:</span><span class="s2">&quot;nothing&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the output will be the string <code class="docutils literal notranslate"><span class="pre">&quot;nothing&quot;</span></code>.</p>
+</div>
+<div class="section" id="dictsort">
+<h3>dictsort<a class="headerlink" href="#dictsort" title="Permalink to this headline">¶</a></h3>
+<p>Takes a list of dictionaries and returns that list sorted by the key given in
+the argument.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">dictsort</span><span class="p">:</span><span class="s2">&quot;name&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;zed&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;amy&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;joe&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>then the output would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;amy&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;joe&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;zed&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dictsortreversed">
+<h3>dictsortreversed<a class="headerlink" href="#dictsortreversed" title="Permalink to this headline">¶</a></h3>
+<p>Takes a list of dictionaries and returns that list sorted in reverse order by
+the key given in the argument. This works exactly the same as the above filter,
+but the returned value will be in reverse order.</p>
+</div>
+<div class="section" id="divisibleby">
+<h3>divisibleby<a class="headerlink" href="#divisibleby" title="Permalink to this headline">¶</a></h3>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the value is divisible by the argument.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">divisibleby</span><span class="p">:</span><span class="s2">&quot;3&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">21</span></code>, the output would be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<div class="section" id="escape">
+<h3>escape<a class="headerlink" href="#escape" title="Permalink to this headline">¶</a></h3>
+<p>Escapes a string’s HTML. Specifically, it makes these replacements:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> is converted to <code class="docutils literal notranslate"><span class="pre">&amp;lt;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> is converted to <code class="docutils literal notranslate"><span class="pre">&amp;gt;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'</span></code> (single quote) is converted to <code class="docutils literal notranslate"><span class="pre">&amp;#39;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;</span></code> (double quote) is converted to <code class="docutils literal notranslate"><span class="pre">&amp;quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> is converted to <code class="docutils literal notranslate"><span class="pre">&amp;amp;</span></code></li>
+</ul>
+<p>The escaping is only applied when the string is output, so it does not matter
+where in a chained sequence of filters you put <code class="docutils literal notranslate"><span class="pre">escape</span></code>: it will always be
+applied as though it were the last filter. If you want escaping to be applied
+immediately, use the <code class="docutils literal notranslate"><span class="pre">force_escape</span></code> filter.</p>
+<p>Applying <code class="docutils literal notranslate"><span class="pre">escape</span></code> to a variable that would normally have auto-escaping
+applied to the result will only result in one round of escaping being done. So
+it is safe to use this function even in auto-escaping environments. If you want
+multiple escaping passes to be applied, use the <code class="docutils literal notranslate"><span class="pre">force_escape</span></code> filter.</p>
+</div>
+<div class="section" id="escapejs">
+<h3>escapejs<a class="headerlink" href="#escapejs" title="Permalink to this headline">¶</a></h3>
+<p>Escapes characters for use in JavaScript strings. This does <em>not</em> make the
+string safe for use in HTML, but does protect you from syntax errors when using
+templates to generate JavaScript/JSON.</p>
+</div>
+<div class="section" id="filesizeformat">
+<h3>filesizeformat<a class="headerlink" href="#filesizeformat" title="Permalink to this headline">¶</a></h3>
+<p>Format the value like a ‘human-readable’ file size (i.e. <code class="docutils literal notranslate"><span class="pre">'13</span> <span class="pre">KB'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'4.1</span> <span class="pre">MB'</span></code>, <code class="docutils literal notranslate"><span class="pre">'102</span> <span class="pre">bytes'</span></code>, etc).</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">filesizeformat</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is 123456789, the output would be <code class="docutils literal notranslate"><span class="pre">117.7</span> <span class="pre">MB</span></code>.</p>
+</div>
+<div class="section" id="first">
+<h3>first<a class="headerlink" href="#first" title="Permalink to this headline">¶</a></h3>
+<p>Returns the first item in a list.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">first</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is the list <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c']</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">'a'</span></code>.</p>
+</div>
+<div class="section" id="fix-ampersands">
+<h3>fix_ampersands<a class="headerlink" href="#fix-ampersands" title="Permalink to this headline">¶</a></h3>
+<p>Replaces ampersands with <code class="docutils literal notranslate"><span class="pre">&amp;amp;</span></code> entities.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">fix_ampersands</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">Tom</span> <span class="pre">&amp;</span> <span class="pre">Jerry</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">Tom</span> <span class="pre">&amp;amp;</span> <span class="pre">Jerry</span></code>.</p>
+</div>
+<div class="section" id="floatformat">
+<h3>floatformat<a class="headerlink" href="#floatformat" title="Permalink to this headline">¶</a></h3>
+<p>When used without an argument, rounds a floating-point number to one decimal
+place – but only if there’s a decimal part to be displayed. For example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="57%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">value</span></code></th>
+<th class="head">Template</th>
+<th class="head">Output</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.23234</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.2</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">34.00000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.26000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.3</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>If used with a numeric integer argument, <code class="docutils literal notranslate"><span class="pre">floatformat</span></code> rounds a number to
+that many decimal places. For example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="57%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">value</span></code></th>
+<th class="head">Template</th>
+<th class="head">Output</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.23234</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:3</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.232</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">34.00000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:3</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.000</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.26000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:3</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.260</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>If the argument passed to <code class="docutils literal notranslate"><span class="pre">floatformat</span></code> is negative, it will round a number
+to that many decimal places – but only if there’s a decimal part to be
+displayed. For example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="59%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">value</span></code></th>
+<th class="head">Template</th>
+<th class="head">Output</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.23234</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:&quot;-3&quot;</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.232</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">34.00000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:&quot;-3&quot;</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">34.26000</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">value|floatformat:&quot;-3&quot;</span> <span class="pre">}}</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">34.260</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Using <code class="docutils literal notranslate"><span class="pre">floatformat</span></code> with no argument is equivalent to using <code class="docutils literal notranslate"><span class="pre">floatformat</span></code>
+with an argument of <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+</div>
+<div class="section" id="force-escape">
+<h3>force_escape<a class="headerlink" href="#force-escape" title="Permalink to this headline">¶</a></h3>
+<p>Applies HTML escaping to a string (see the <code class="docutils literal notranslate"><span class="pre">escape</span></code> filter for details).
+This filter is applied <em>immediately</em> and returns a new, escaped string. This
+is useful in the rare cases where you need multiple escaping or want to apply
+other filters to the escaped results. Normally, you want to use the <code class="docutils literal notranslate"><span class="pre">escape</span></code>
+filter.</p>
+</div>
+<div class="section" id="get-digit">
+<h3>get_digit<a class="headerlink" href="#get-digit" title="Permalink to this headline">¶</a></h3>
+<p>Given a whole number, returns the requested digit, where 1 is the right-most
+digit, 2 is the second-right-most digit, etc. Returns the original value for
+invalid input (if input or argument is not an integer, or if argument is less
+than 1). Otherwise, output is always an integer.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">get_digit</span><span class="p">:</span><span class="s2">&quot;2&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">123456789</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">8</span></code>.</p>
+</div>
+<div class="section" id="iriencode">
+<h3>iriencode<a class="headerlink" href="#iriencode" title="Permalink to this headline">¶</a></h3>
+<p>Converts an IRI (Internationalized Resource Identifier) to a string that is
+suitable for including in a URL. This is necessary if you’re trying to use
+strings containing non-ASCII characters in a URL.</p>
+<p>It’s safe to use this filter on a string that has already gone through the
+<code class="docutils literal notranslate"><span class="pre">urlencode</span></code> filter.</p>
+</div>
+<div class="section" id="join">
+<h3>join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h3>
+<p>Joins a list with a string, like Python’s <code class="docutils literal notranslate"><span class="pre">str.join(list)</span></code></p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">join</span><span class="p">:</span><span class="s2">&quot; // &quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is the list <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c']</span></code>, the output will be the string
+<code class="docutils literal notranslate"><span class="pre">&quot;a</span> <span class="pre">//</span> <span class="pre">b</span> <span class="pre">//</span> <span class="pre">c&quot;</span></code>.</p>
+</div>
+<div class="section" id="last">
+<h3>last<a class="headerlink" href="#last" title="Permalink to this headline">¶</a></h3>
+<p>Returns the last item in a list.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">last</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is the list <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c',</span> <span class="pre">'d']</span></code>, the output will be the string
+<code class="docutils literal notranslate"><span class="pre">&quot;d&quot;</span></code>.</p>
+</div>
+<div class="section" id="length">
+<h3>length<a class="headerlink" href="#length" title="Permalink to this headline">¶</a></h3>
+<p>Returns the length of the value. This works for both strings and lists.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">length</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c',</span> <span class="pre">'d']</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
+</div>
+<div class="section" id="length-is">
+<h3>length_is<a class="headerlink" href="#length-is" title="Permalink to this headline">¶</a></h3>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the value’s length is the argument, or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">length_is</span><span class="p">:</span><span class="s2">&quot;4&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c',</span> <span class="pre">'d']</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<div class="section" id="linebreaks">
+<h3>linebreaks<a class="headerlink" href="#linebreaks" title="Permalink to this headline">¶</a></h3>
+<p>Replaces line breaks in plain text with appropriate HTML; a single
+newline becomes an HTML line break (<code class="docutils literal notranslate"><span class="pre">&lt;br</span> <span class="pre">/&gt;</span></code>) and a new line
+followed by a blank line becomes a paragraph break (<code class="docutils literal notranslate"><span class="pre">&lt;/p&gt;</span></code>).</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">linebreaks</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">Joel\nis</span> <span class="pre">a</span> <span class="pre">slug</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&lt;p&gt;Joel&lt;br</span> <span class="pre">/&gt;is</span> <span class="pre">a</span>
+<span class="pre">slug&lt;/p&gt;</span></code>.</p>
+<div class="section" id="linebreaksbr">
+<h4>linebreaksbr<a class="headerlink" href="#linebreaksbr" title="Permalink to this headline">¶</a></h4>
+<p>Converts all newlines in a piece of plain text to HTML line breaks
+(<code class="docutils literal notranslate"><span class="pre">&lt;br</span> <span class="pre">/&gt;</span></code>).</p>
+</div>
+</div>
+<div class="section" id="linenumbers">
+<h3>linenumbers<a class="headerlink" href="#linenumbers" title="Permalink to this headline">¶</a></h3>
+<p>Displays text with line numbers.</p>
+</div>
+<div class="section" id="ljust">
+<h3>ljust<a class="headerlink" href="#ljust" title="Permalink to this headline">¶</a></h3>
+<p>Left-aligns the value in a field of a given width.</p>
+<p><strong>Argument:</strong> field size</p>
+</div>
+<div class="section" id="lower">
+<h3>lower<a class="headerlink" href="#lower" title="Permalink to this headline">¶</a></h3>
+<p>Converts a string into all lowercase.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">lower</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">Still</span> <span class="pre">MAD</span> <span class="pre">At</span> <span class="pre">Yoko</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">still</span> <span class="pre">mad</span> <span class="pre">at</span> <span class="pre">yoko</span></code>.</p>
+</div>
+<div class="section" id="make-list">
+<h3>make_list<a class="headerlink" href="#make-list" title="Permalink to this headline">¶</a></h3>
+<p>Returns the value turned into a list. For an integer, it’s a list of
+digits. For a string, it’s a list of characters.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">make_list</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is the string <code class="docutils literal notranslate"><span class="pre">&quot;Joel&quot;</span></code>, the output would be the list
+<code class="docutils literal notranslate"><span class="pre">[u'J',</span> <span class="pre">u'o',</span> <span class="pre">u'e',</span> <span class="pre">u'l']</span></code>. If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">123</span></code>, the output will be the
+list <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>.</p>
+</div>
+<div class="section" id="phone2numeric">
+<h3>phone2numeric<a class="headerlink" href="#phone2numeric" title="Permalink to this headline">¶</a></h3>
+<p>Converts a phone number (possibly containing letters) to its numerical
+equivalent. For example, <code class="docutils literal notranslate"><span class="pre">'800-COLLECT'</span></code> will be converted to
+<code class="docutils literal notranslate"><span class="pre">'800-2655328'</span></code>.</p>
+<p>The input doesn’t have to be a valid phone number. This will happily convert
+any string.</p>
+</div>
+<div class="section" id="pluralize">
+<h3>pluralize<a class="headerlink" href="#pluralize" title="Permalink to this headline">¶</a></h3>
+<p>Returns a plural suffix if the value is not 1. By default, this suffix is <code class="docutils literal notranslate"><span class="pre">'s'</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">have</span> <span class="p">{{</span> <span class="n">num_messages</span> <span class="p">}}</span> <span class="n">message</span><span class="p">{{</span> <span class="n">num_messages</span><span class="o">|</span><span class="n">pluralize</span> <span class="p">}}</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>For words that require a suffix other than <code class="docutils literal notranslate"><span class="pre">'s'</span></code>, you can provide an alternate
+suffix as a parameter to the filter.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">have</span> <span class="p">{{</span> <span class="n">num_walruses</span> <span class="p">}}</span> <span class="n">walrus</span><span class="p">{{</span> <span class="n">num_walrus</span><span class="o">|</span><span class="n">pluralize</span><span class="p">:</span><span class="s2">&quot;es&quot;</span> <span class="p">}}</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>For words that don’t pluralize by simple suffix, you can specify both a
+singular and plural suffix, separated by a comma.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">have</span> <span class="p">{{</span> <span class="n">num_cherries</span> <span class="p">}}</span> <span class="n">cherr</span><span class="p">{{</span> <span class="n">num_cherries</span><span class="o">|</span><span class="n">pluralize</span><span class="p">:</span><span class="s2">&quot;y,ies&quot;</span> <span class="p">}}</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pprint">
+<h3>pprint<a class="headerlink" href="#pprint" title="Permalink to this headline">¶</a></h3>
+<p>A wrapper around the Python standard library’s <code class="docutils literal notranslate"><span class="pre">pprint.pprint</span></code> function –
+for debugging, really.</p>
+</div>
+<div class="section" id="random">
+<h3>random<a class="headerlink" href="#random" title="Permalink to this headline">¶</a></h3>
+<p>Returns a random item from the given list.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">random</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is the list <code class="docutils literal notranslate"><span class="pre">['a',</span> <span class="pre">'b',</span> <span class="pre">'c',</span> <span class="pre">'d']</span></code>, the output could be <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>.</p>
+</div>
+<div class="section" id="removetags">
+<h3>removetags<a class="headerlink" href="#removetags" title="Permalink to this headline">¶</a></h3>
+<p>Removes a space-separated list of [X]HTML tags from the output.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">removetags</span><span class="p">:</span><span class="s2">&quot;b span&quot;</span><span class="o">|</span><span class="n">safe</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;&lt;b&gt;Joel&lt;/b&gt;</span> <span class="pre">&lt;button&gt;is&lt;/button&gt;</span> <span class="pre">a</span> <span class="pre">&lt;span&gt;slug&lt;/span&gt;&quot;</span></code> the
+output will be <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">&lt;button&gt;is&lt;/button&gt;</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>.</p>
+</div>
+<div class="section" id="rjust">
+<h3>rjust<a class="headerlink" href="#rjust" title="Permalink to this headline">¶</a></h3>
+<p>Right-aligns the value in a field of a given width.</p>
+<p><strong>Argument:</strong> field size</p>
+</div>
+<div class="section" id="safe">
+<h3>safe<a class="headerlink" href="#safe" title="Permalink to this headline">¶</a></h3>
+<p>Marks a string as not requiring further HTML escaping prior to output. When
+autoescaping is off, this filter has no effect.</p>
+</div>
+<div class="section" id="safeseq">
+<h3>safeseq<a class="headerlink" href="#safeseq" title="Permalink to this headline">¶</a></h3>
+<p>Applies the <code class="docutils literal notranslate"><span class="pre">safe</span></code> filter to each element of a sequence.  Useful in
+conjunction with other filters that operate on sequences, such as
+<code class="docutils literal notranslate"><span class="pre">join</span></code>.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">some_list</span><span class="o">|</span><span class="n">safeseq</span><span class="o">|</span><span class="n">join</span><span class="p">:</span><span class="s2">&quot;, &quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>You couldn’t use the <code class="docutils literal notranslate"><span class="pre">safe</span></code> filter directly in this case, as it would
+first convert the variable into a string, rather than working with the
+individual elements of the sequence.</p>
+</div>
+<div class="section" id="slice">
+<h3>slice<a class="headerlink" href="#slice" title="Permalink to this headline">¶</a></h3>
+<p>Returns a slice of the list.</p>
+<p>Uses the same syntax as Python’s list slicing. See
+<a class="reference external" href="http://diveintopython.org/native_data_types/lists.html#odbchelper.list.slice">http://diveintopython.org/native_data_types/lists.html#odbchelper.list.slice</a>
+for an introduction.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">some_list</span><span class="o">|</span><span class="nb">slice</span><span class="p">:</span><span class="s2">&quot;:2&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="slugify">
+<h3>slugify<a class="headerlink" href="#slugify" title="Permalink to this headline">¶</a></h3>
+<p>Converts to lowercase, removes non-word characters (only alphanumerics and
+underscores are kept) and converts spaces to hyphens. Also strips leading and trailing
+whitespace.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">slugify</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&quot;joel-is-a-slug&quot;</span></code>.</p>
+</div>
+<div class="section" id="stringformat">
+<h3>stringformat<a class="headerlink" href="#stringformat" title="Permalink to this headline">¶</a></h3>
+<p>Formats the variable according to the argument, a string formatting specifier.
+This specifier uses Python string formatting syntax, with the exception that
+the leading “%” is dropped.</p>
+<p>See <a class="reference external" href="http://docs.python.org/library/stdtypes.html#string-formatting-operations">http://docs.python.org/library/stdtypes.html#string-formatting-operations</a>
+for documentation of Python string formatting.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">stringformat</span><span class="p">:</span><span class="s2">&quot;s&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>.</p>
+</div>
+<div class="section" id="striptags">
+<h3>striptags<a class="headerlink" href="#striptags" title="Permalink to this headline">¶</a></h3>
+<p>Strips all [X]HTML tags.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">striptags</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;&lt;b&gt;Joel&lt;/b&gt;</span> <span class="pre">&lt;button&gt;is&lt;/button&gt;</span> <span class="pre">a</span> <span class="pre">&lt;span&gt;slug&lt;/span&gt;&quot;</span></code>, the
+output will be <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>.</p>
+</div>
+<div class="section" id="time">
+<h3>time<a class="headerlink" href="#time" title="Permalink to this headline">¶</a></h3>
+<p>Formats a time according to the given format (same as the <a class="reference internal" href="#now">now</a> tag).
+The time filter will only accept parameters in the format string that relate
+to the time of day, not the date (for obvious reasons). If you need to
+format a date, use the <a class="reference internal" href="#date">date</a> filter.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">time</span><span class="p">:</span><span class="s2">&quot;H:i&quot;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">datetime.datetime.now()</span></code>, the output will be
+the string <code class="docutils literal notranslate"><span class="pre">&quot;01:23&quot;</span></code>.</p>
+<p>When used without a format string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">time</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>…the formatting string defined in the <code class="docutils literal notranslate"><span class="pre">TIME_FORMAT</span></code> setting will be
+used.</p>
+</div>
+<div class="section" id="timesince">
+<h3>timesince<a class="headerlink" href="#timesince" title="Permalink to this headline">¶</a></h3>
+<p>Formats a date as the time since that date (e.g., “4 days, 6 hours”).</p>
+<p>Takes an optional argument that is a variable containing the date to use as
+the comparison point (without the argument, the comparison point is <em>now</em>).
+For example, if <code class="docutils literal notranslate"><span class="pre">blog_date</span></code> is a date instance representing midnight on 1
+June 2006, and <code class="docutils literal notranslate"><span class="pre">comment_date</span></code> is a date instance for 08:00 on 1 June 2006,
+then <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">blog_date|timesince:comment_date</span> <span class="pre">}}</span></code> would return “8 hours”.</p>
+<p>Comparing offset-naive and offset-aware datetimes will return an empty string.</p>
+<p>Minutes is the smallest unit used, and “0 minutes” will be returned for any
+date that is in the future relative to the comparison point.</p>
+</div>
+<div class="section" id="timeuntil">
+<h3>timeuntil<a class="headerlink" href="#timeuntil" title="Permalink to this headline">¶</a></h3>
+<p>Similar to <code class="docutils literal notranslate"><span class="pre">timesince</span></code>, except that it measures the time from now until the
+given date or datetime. For example, if today is 1 June 2006 and
+<code class="docutils literal notranslate"><span class="pre">conference_date</span></code> is a date instance holding 29 June 2006, then
+<code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">conference_date|timeuntil</span> <span class="pre">}}</span></code> will return “4 weeks”.</p>
+<p>Takes an optional argument that is a variable containing the date to use as
+the comparison point (instead of <em>now</em>). If <code class="docutils literal notranslate"><span class="pre">from_date</span></code> contains 22 June
+2006, then <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">conference_date|timeuntil:from_date</span> <span class="pre">}}</span></code> will return “1 week”.</p>
+<p>Comparing offset-naive and offset-aware datetimes will return an empty string.</p>
+<p>Minutes is the smallest unit used, and “0 minutes” will be returned for any
+date that is in the past relative to the comparison point.</p>
+</div>
+<div class="section" id="title">
+<h3>title<a class="headerlink" href="#title" title="Permalink to this headline">¶</a></h3>
+<p>Converts a string into titlecase.</p>
+</div>
+<div class="section" id="truncatewords">
+<h3>truncatewords<a class="headerlink" href="#truncatewords" title="Permalink to this headline">¶</a></h3>
+<p>Truncates a string after a certain number of words.</p>
+<p><strong>Argument:</strong> Number of words to truncate after</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">truncatewords</span><span class="p">:</span><span class="mi">2</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">...&quot;</span></code>.</p>
+</div>
+<div class="section" id="truncatewords-html">
+<h3>truncatewords_html<a class="headerlink" href="#truncatewords-html" title="Permalink to this headline">¶</a></h3>
+<p>Similar to <code class="docutils literal notranslate"><span class="pre">truncatewords</span></code>, except that it is aware of HTML tags. Any tags
+that are opened in the string and not closed before the truncation point, are
+closed immediately after the truncation.</p>
+<p>This is less efficient than <code class="docutils literal notranslate"><span class="pre">truncatewords</span></code>, so should only be used when it
+is being passed HTML text.</p>
+</div>
+<div class="section" id="unordered-list">
+<h3>unordered_list<a class="headerlink" href="#unordered-list" title="Permalink to this headline">¶</a></h3>
+<p>Recursively takes a self-nested list and returns an HTML unordered list –
+WITHOUT opening and closing &lt;ul&gt; tags.</p>
+<p>The list is assumed to be in the proper format. For example, if <code class="docutils literal notranslate"><span class="pre">var</span></code> contains
+<code class="docutils literal notranslate"><span class="pre">['States',</span> <span class="pre">['Kansas',</span> <span class="pre">['Lawrence',</span> <span class="pre">'Topeka'],</span> <span class="pre">'Illinois']]</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">var|unordered_list</span> <span class="pre">}}</span></code> would return:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">States</span>
+<span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">Kansas</span>
+        <span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">Lawrence</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">Topeka</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="n">Illinois</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upper">
+<h3>upper<a class="headerlink" href="#upper" title="Permalink to this headline">¶</a></h3>
+<p>Converts a string into all uppercase.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">upper</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug&quot;</span></code>, the output will be <code class="docutils literal notranslate"><span class="pre">&quot;JOEL</span> <span class="pre">IS</span> <span class="pre">A</span> <span class="pre">SLUG&quot;</span></code>.</p>
+</div>
+<div class="section" id="urlencode">
+<h3>urlencode<a class="headerlink" href="#urlencode" title="Permalink to this headline">¶</a></h3>
+<p>Escapes a value for use in a URL.</p>
+</div>
+<div class="section" id="urlize">
+<h3>urlize<a class="headerlink" href="#urlize" title="Permalink to this headline">¶</a></h3>
+<p>Converts URLs in plain text into clickable links.</p>
+<p>Note that if <code class="docutils literal notranslate"><span class="pre">urlize</span></code> is applied to text that already contains HTML markup,
+things won’t work as expected. Apply this filter only to <em>plain</em> text.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">urlize</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Check</span> <span class="pre">out</span> <span class="pre">www.djangoproject.com&quot;</span></code>, the output will be
+<code class="docutils literal notranslate"><span class="pre">&quot;Check</span> <span class="pre">out</span> <span class="pre">&lt;a</span>
+<span class="pre">href=&quot;http://www.djangoproject.com&quot;&gt;www.djangoproject.com&lt;/a&gt;&quot;</span></code>.</p>
+</div>
+<div class="section" id="urlizetrunc">
+<h3>urlizetrunc<a class="headerlink" href="#urlizetrunc" title="Permalink to this headline">¶</a></h3>
+<p>Converts URLs into clickable links, truncating URLs longer than the given
+character limit.</p>
+<p>As with <a class="reference internal" href="#urlize">urlize</a>, this filter should only be applied to <em>plain</em> text.</p>
+<p><strong>Argument:</strong> Length to truncate URLs to</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">urlizetrunc</span><span class="p">:</span><span class="mi">15</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;Check</span> <span class="pre">out</span> <span class="pre">www.djangoproject.com&quot;</span></code>, the output would be
+<code class="docutils literal notranslate"><span class="pre">'Check</span> <span class="pre">out</span> <span class="pre">&lt;a</span>
+<span class="pre">href=&quot;http://www.djangoproject.com&quot;&gt;www.djangopr...&lt;/a&gt;'</span></code>.</p>
+</div>
+<div class="section" id="wordcount">
+<h3>wordcount<a class="headerlink" href="#wordcount" title="Permalink to this headline">¶</a></h3>
+<p>Returns the number of words.</p>
+</div>
+<div class="section" id="wordwrap">
+<h3>wordwrap<a class="headerlink" href="#wordwrap" title="Permalink to this headline">¶</a></h3>
+<p>Wraps words at specified line length.</p>
+<p><strong>Argument:</strong> number of characters at which to wrap the text</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{</span> <span class="n">value</span><span class="o">|</span><span class="n">wordwrap</span><span class="p">:</span><span class="mi">5</span> <span class="p">}}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <code class="docutils literal notranslate"><span class="pre">Joel</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">slug</span></code>, the output would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Joel</span>
+<span class="ow">is</span> <span class="n">a</span>
+<span class="n">slug</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yesno">
+<h3>yesno<a class="headerlink" href="#yesno" title="Permalink to this headline">¶</a></h3>
+<p>Given a string mapping values for <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code>, and (optionally) <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+returns one of those strings according to the value (see Table F-4).</p>
+<table border="1" class="docutils" id="id4">
+<caption><span class="caption-text">Table E-4. Examples of the yesno Filter</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="15%" />
+<col width="33%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Argument</th>
+<th class="head">Outputs</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">True</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&quot;yeah,no,maybe&quot;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">yeah</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">False</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&quot;yeah,no,maybe&quot;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">no</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&quot;yeah,no,maybe&quot;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">maybe</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&quot;yeah,no&quot;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code> (converts None to False
+if no mapping for None is given)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div id="ft">
+        
+<div class="nav">
+    
+        <a href='appendixD.html'>&laquo; previous</a> &loz;
+    
+    <a href="index.html">table of contents</a>
+    
+        &loz; <a href='appendixF.html'>next &raquo;</a>
+    
+</div>
+
+        Copyright Adrian Holovaty, Jacob Kaplan-Moss, et al.<br>This
+        work is licensed under the <a href="license.html">GNU Free Document
+        License</a>.
+      </div>
+    </div>
+  
+  </body>
+</html>
