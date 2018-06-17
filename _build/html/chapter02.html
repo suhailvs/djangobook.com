@@ -48,19 +48,10 @@ desktop/laptop machine or a server.</p>
 framework is to make sure you have Python installed.</p>
 <div class="section" id="python-versions">
 <h3>Python Versions<a class="headerlink" href="#python-versions" title="Permalink to this headline">¶</a></h3>
-<p>The core Django framework (version 1.11+) works with any Python version from 2.6
-to 3.3, inclusive. Django’s optional GIS (Geographic Information Systems)
-support requires Python 2.6 to 2.7.</p>
-<p>If you’re not sure which version of Python to install and you have complete
-freedom over the decision, pick the latest one in the 2.x series: version 2.7.
-Although Django works equally well with any version from 2.6 to 3.3, certain
-third-party Django add-ons that you might want to use might require a later
-versions of Python 2.7.x.</p>
+<p>Django 2.0 supports Python 3.4, 3.5, and 3.6. The Django 1.11.x series is the last to support Python 2.7.</p>
 <div class="admonition-django-on-jython admonition">
 <p class="first admonition-title">Django on Jython</p>
-<p class="last">If you use Jython (a Python implementation for the Java platform),
-you’ll need to follow a few additional steps.
-See <a class="reference external" href="https://docs.djangoproject.com/en/1.6/howto/jython/">https://docs.djangoproject.com/en/1.6/howto/jython/</a> for details.</p>
+<p class="last">If you want to use Jython (which supports only Python 2.7 at the time of this writing), you must use Django 1.11.x (the last series to support Python 2).</p>
 </div>
 </div>
 <div class="section" id="installation">
@@ -68,7 +59,7 @@ See <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ho
 <p>If you’re on Linux or Mac OS X, you probably have Python already installed.
 Type <code class="docutils literal notranslate"><span class="pre">python</span></code> at a command prompt (or in Applications/Utilities/Terminal, in
 OS X). If you see something like this, then Python is installed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Python</span> <span class="mf">2.7</span><span class="o">.</span><span class="mi">12</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">Apr</span> <span class="mi">22</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">17</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Python</span> <span class="mf">3.5</span><span class="o">.</span><span class="mi">2</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">Nov</span> <span class="mi">23</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">01</span><span class="p">)</span>
 <span class="p">[</span><span class="n">GCC</span> <span class="mf">5.4</span><span class="o">.</span><span class="mi">3</span><span class="p">]</span> <span class="n">on</span> <span class="n">linux2</span>
 <span class="n">Type</span> <span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;copyright&quot;</span><span class="p">,</span> <span class="s2">&quot;credits&quot;</span> <span class="ow">or</span> <span class="s2">&quot;license&quot;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="o">.</span>
 <span class="o">&gt;&gt;&gt;</span>
@@ -90,20 +81,20 @@ that the development version exists, because you’ll find it mentioned
 in the documentation and by members of the community.</p>
 <div class="section" id="installing-an-official-release">
 <h3>Installing an Official Release<a class="headerlink" href="#installing-an-official-release" title="Permalink to this headline">¶</a></h3>
-<p>Official releases have a version number, such as 1.11.2, 1.11.1 or 1.11, and the latest
+<p>Official releases have a version number, such as 2.0.6, 2.0.5 or 2.0, and the latest
 one is always available at <a class="reference external" href="http://www.djangoproject.com/download/">http://www.djangoproject.com/download/</a>.</p>
 <p>If you’re on a Linux distribution that includes a package of Django, it’s a
 good idea to use the distributor’s version. That way, you’ll get security
 updates along with the rest of your system packages.</p>
 <p>If you don’t have access to a prepackaged version, you can download and install
 the framework manually. To do so, first download the tarball, which will be
-named something like <code class="docutils literal notranslate"><span class="pre">Django-1.11.tar.gz</span></code>. (It doesn’t matter which
+named something like <code class="docutils literal notranslate"><span class="pre">Django-2.0.6.tar.gz</span></code>. (It doesn’t matter which
 local directory you download this file into; the installation process will put
 Django’s files in the right place.) Then, unzip it and run <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">install</span></code>,
 as you do with most Python libraries.</p>
 <p>Here’s how that process looks on Unix systems:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xzvf</span> <span class="n">Django</span><span class="o">-</span><span class="mf">1.11</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-<span class="n">cd</span> <span class="n">Django</span><span class="o">-</span><span class="mf">1.11</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xzvf</span> <span class="n">Django</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mf">6.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">Django</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mi">6</span>
 <span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
@@ -198,7 +189,7 @@ Python interactive interpreter by typing <code class="docutils literal notransla
 successful, you should be able to import the module <code class="docutils literal notranslate"><span class="pre">django</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">django</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">django</span><span class="o">.</span><span class="n">VERSION</span>
-<span class="go">(1, 11, 3, &#39;final&#39;, 0)</span>
+<span class="go">(2, 0, 6, &#39;final&#39;, 0)</span>
 </pre></div>
 </div>
 <div class="admonition-interactive-interpreter-examples admonition">
@@ -414,7 +405,7 @@ if you haven’t already, and run this command:</p>
 
 <span class="mi">0</span> <span class="n">errors</span> <span class="n">found</span>
 <span class="n">August</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">2017</span> <span class="o">-</span> <span class="mi">09</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">03</span>
-<span class="n">Django</span> <span class="n">version</span> <span class="mf">1.11</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="n">using</span> <span class="n">settings</span> <span class="s1">&#39;mysite.settings&#39;</span>
+<span class="n">Django</span> <span class="n">version</span> <span class="mf">2.0</span><span class="o">.</span><span class="mi">6</span><span class="p">,</span> <span class="n">using</span> <span class="n">settings</span> <span class="s1">&#39;mysite.settings&#39;</span>
 <span class="n">Starting</span> <span class="n">development</span> <span class="n">server</span> <span class="n">at</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span>
 <span class="n">Quit</span> <span class="n">the</span> <span class="n">server</span> <span class="k">with</span> <span class="n">CONTROL</span><span class="o">-</span><span class="n">C</span><span class="o">.</span>
 </pre></div>

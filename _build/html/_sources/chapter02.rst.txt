@@ -22,21 +22,12 @@ framework is to make sure you have Python installed.
 Python Versions
 ---------------
 
-The core Django framework (version 1.11+) works with any Python version from 2.6
-to 3.3, inclusive. Django's optional GIS (Geographic Information Systems)
-support requires Python 2.6 to 2.7.
+Django 2.0 supports Python 3.4, 3.5, and 3.6. The Django 1.11.x series is the last to support Python 2.7.
 
-If you're not sure which version of Python to install and you have complete
-freedom over the decision, pick the latest one in the 2.x series: version 2.7.
-Although Django works equally well with any version from 2.6 to 3.3, certain 
-third-party Django add-ons that you might want to use might require a later
-versions of Python 2.7.x.
 
 .. admonition:: Django on Jython
 
-    If you use Jython (a Python implementation for the Java platform), 
-    you’ll need to follow a few additional steps. 
-    See https://docs.djangoproject.com/en/1.6/howto/jython/ for details.
+    If you want to use Jython (which supports only Python 2.7 at the time of this writing), you must use Django 1.11.x (the last series to support Python 2).
 
 Installation
 ------------
@@ -45,7 +36,7 @@ If you're on Linux or Mac OS X, you probably have Python already installed.
 Type ``python`` at a command prompt (or in Applications/Utilities/Terminal, in
 OS X). If you see something like this, then Python is installed::
 
-    Python 2.7.12 (default, Apr 22 2017, 22:30:17)
+    Python 3.5.2 (default, Nov 23 2017, 16:37:01)
     [GCC 5.4.3] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
@@ -69,7 +60,7 @@ in the documentation and by members of the community.
 Installing an Official Release
 ------------------------------
 
-Official releases have a version number, such as 1.11.2, 1.11.1 or 1.11, and the latest
+Official releases have a version number, such as 2.0.6, 2.0.5 or 2.0, and the latest
 one is always available at http://www.djangoproject.com/download/.
 
 If you're on a Linux distribution that includes a package of Django, it's a
@@ -78,15 +69,15 @@ updates along with the rest of your system packages.
 
 If you don't have access to a prepackaged version, you can download and install
 the framework manually. To do so, first download the tarball, which will be
-named something like ``Django-1.11.tar.gz``. (It doesn't matter which
+named something like ``Django-2.0.6.tar.gz``. (It doesn't matter which
 local directory you download this file into; the installation process will put
 Django's files in the right place.) Then, unzip it and run ``setup.py install``,
 as you do with most Python libraries.
 
 Here's how that process looks on Unix systems::
 
-    tar xzvf Django-1.11.tar.gz
-    cd Django-1.11
+    tar xzvf Django-2.0.6.tar.gz
+    cd Django-2.0.6
     sudo python setup.py install
 
 On Windows, we recommend using 7-Zip (http://www.djangoproject.com/r/7zip/)
@@ -185,7 +176,7 @@ successful, you should be able to import the module ``django``:
 
     >>> import django
     >>> django.VERSION
-    (1, 11, 3, 'final', 0)
+    (2, 0, 6, 'final', 0)
 
 .. admonition:: Interactive Interpreter Examples
 
@@ -439,7 +430,7 @@ You'll see something like this::
 
     0 errors found
     August 12, 2017 - 09:32:03
-    Django version 1.11.3, using settings 'mysite.settings'
+    Django version 2.0.6, using settings 'mysite.settings'
     Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
     

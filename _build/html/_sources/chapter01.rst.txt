@@ -342,12 +342,12 @@ print by Apress.
 Required Django Version
 -----------------------
 
-This book covers Django 1.11.
+This book covers Django 2.0.
 
 Django's developers maintain backwards compatibility as much as possible, but
 occasionally introduce some backwards incompatible changes.  The changes in each
 release are always covered in the release notes, which you can find here:
-https://docs.djangoproject.com/en/dev/releases/1.X
+https://docs.djangoproject.com/en/dev/releases/2.0
 
 
 Getting Help
