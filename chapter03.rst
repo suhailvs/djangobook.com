@@ -96,38 +96,41 @@ When you executed ``django-admin.py startproject`` in the previous chapter, the
 script created a URLconf for you automatically: the file ``urls.py``. By
 default, it looks something like this::
 
-    from django.conf.urls import include, url
+    """mysite URL Configuration
 
-    # Uncomment the next two lines to enable the admin:
-    # from django.contrib import admin
-    # admin.autodiscover()
-    from mysite.views import home
+    The `urlpatterns` list routes URLs to views. For more information please see:
+        https://docs.djangoproject.com/en/2.0/topics/http/urls/
+    Examples:
+    Function views
+        1. Add an import:  from my_app import views
+        2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    Class-based views
+        1. Add an import:  from other_app.views import Home
+        2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    Including another URLconf
+        1. Import the include() function: from django.urls import include, path
+        2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    """
+    from django.contrib import admin
+    from django.urls import path
 
     urlpatterns = [
-        # Examples:
-        # url(r'^$', home, name='home'),
-        # url(r'^mysite/', include('mysite.foo.urls')),
-
-        # Uncomment the admin/doc line below to enable admin documentation:
-        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-        # Uncomment the next line to enable the admin:
-        # url(r'^admin/', include(admin.site.urls)),
+        path('admin/', admin.site.urls),
     ]
 
-This default URLconf includes some commonly used Django features commented out,
-so that activating those features is as easy as uncommenting the appropriate
-lines. If we ignore the commented-out code, here's the essence of a URLconf::
+If we ignore the commented-out code, here's the essence of a URLconf::
+    
+    from django.contrib import admin
+    from django.urls import path
 
-    from django.conf.urls import include, url
-
-    urlpatterns = []
+    urlpatterns = [
+      path('admin/', admin.site.urls),
+    ]
 
 Let's step through this code one line at a time:
 
-* The first line imports two functions from the ``django.conf.urls``
-  module, which is Django's URLconf infrastructure: ``include``,
-  and ``urls``.
+* The first line imports `path` function from the ``django.urls``
+  module.
 
 * The second line a python `list` is saved
   into a variable called ``urlpatterns``. 
@@ -138,21 +141,24 @@ between URLs and the code that handles those URLs. By default, as we can see,
 the URLconf is empty -- your Django application is a blank slate. (As a side
 note, that's how Django knew to show you the "Welcome to Django" page in the
 last chapter. If your URLconf is empty, Django assumes you just started a new
-project and, hence, displays that message.)  The variable ``urlpatterns`` should be a Python list of ``django.conf.urls.url()`` instances.
+project and, hence, displays that message.)  The variable ``urlpatterns`` should be a Python list of ``django.urls.path()`` instances.
 
 
 To add a URL and view to the URLconf, just add a mapping between a URL
 pattern and the view function. Here's how to hook in our ``hello`` view::
 
-    from django.conf.urls import include, url
+    from django.contrib import admin
+    from django.urls import path
     from mysite.views import hello
 
     urlpatterns = [
-        url(r'^hello/$', hello),
+        path('hello/', hello),
+        path('admin/', admin.site.urls),
     ]
 
-(Note that we've removed the commented-out code for brevity. You can choose
-to leave those lines in, if you'd like.)
+
+Hopes server is running locally on port 8000, you can now visit http://127.0.0.1:8000/hello/ 
+with your Web browser.
 
 We made two changes here:
 
@@ -161,28 +167,12 @@ We made two changes here:
   import syntax. (This assumes ``mysite/views.py`` is on your Python path;
   see the sidebar for details.)
 
-* Next, we added the line ``url(r'^hello/$', hello),`` to ``urlpatterns``. This
-  line is referred to as a *URLpattern*. The ``url()`` function tells Django how
-  to handle the url that you are configuring. The first argument is a
-  pattern-matching string (a regular expression; more on this in a bit) and the
-  second argument is the view function to use for that pattern. ``url()`` can
+* Next, we added the line ``path('hello/', hello),`` to ``urlpatterns``. This
+  line is referred to as a *URLpattern*. The ``path()`` function tells Django how
+  to handle the url that you are configuring. ``path()`` can
   take other optional arguments as well, which we'll cover in more depth in
   :doc:`chapter08`.
 
-.. note::
-
-  One more important detail we've introduced here is that ``r`` character in
-  front of the regular expression string. This tells Python that the string is a
-  "raw string" -- its contents should not interpret backslashes. In normal
-  Python strings, backslashes are used for escaping special characters -- such
-  as in the string ``'\n'``, which is a one-character string containing a
-  newline. When you add the ``r`` to make it a raw string, Python does not apply
-  its backslash escaping -- so, ``r'\n'`` is a two-character string containing a
-  literal backslash and a lowercase "n". There's a natural collision between
-  Python's usage of backslashes and the backslashes that are found in regular
-  expressions, so it's strongly suggested that you use raw strings any time
-  you're defining a regular expression in Python. All of the URLpatterns in this
-  book will be raw strings.
 
 In a nutshell, we just told Django that any request to the URL ``/hello/`` should
 be handled by the ``hello`` view function.
@@ -193,12 +183,12 @@ be handled by the ``hello`` view function.
     looks when you use the Python ``import`` statement.
 
     For example, let's say your Python path is set to ``['',
-    '/usr/lib/python2.7/site-packages', '/home/username/djcode']``. If you
+    '/usr/lib/python3.6/site-packages', '/home/username/djcode']``. If you
     execute the Python statement ``from foo import bar``, Python will look for
     a module called ``foo.py`` in the current directory. (The first entry in the
     Python path, an empty string, means "the current directory.") If that file
     doesn't exist, Python will look for the file
-    ``/usr/lib/python2.7/site-packages/foo.py``. If that file doesn't exist, it
+    ``/usr/lib/python3.6/site-packages/foo.py``. If that file doesn't exist, it
     will try ``/home/username/djcode/foo.py``. Finally, if *that* file doesn't
     exist, it will raise ``ImportError``.
 
@@ -206,58 +196,27 @@ be handled by the ``hello`` view function.
     Python interactive interpreter and type this::
 
         >>> import sys
-        >>> print sys.path
+        >>> print (sys.path)
 
     Generally you don't have to worry about setting your Python path -- Python
     and Django take care of things for you automatically behind the scenes.
     (Setting the Python path is one of the things that the ``manage.py`` script
     does.)
 
-It's worth discussing the syntax of this URLpattern, as it may not be
-immediately obvious. Although we want to match the URL ``/hello/``, the pattern
-looks a bit different than that. Here's why:
+You may be wondering what happens if someone requests the URL ``/hello``
+(that is, *without* a trailing slash). Because our URLpattern requires a
+trailing slash, that URL would *not* match. However, by default, any
+request to a URL that *doesn't* match a URLpattern and *doesn't* end with
+a slash will be redirected to the same URL with a trailing slash. (This
+is regulated by the ``APPEND_SLASH`` Django setting, which is covered in
+Appendix D.)
 
-* Django removes the slash from the front of every incoming URL before it
-  checks the URLpatterns. This means that our URLpattern doesn't include
-  the leading slash in ``/hello/``. (At first, this may seem unintuitive,
-  but this requirement simplifies things -- such as the inclusion of
-  URLconfs within other URLconfs, which we'll cover in Chapter 8.)
-
-* The pattern includes a caret (``^``) and a dollar sign (``$``). These are
-  regular expression characters that have a special meaning: the caret
-  means "require that the pattern matches the start of the string," and the
-  dollar sign means "require that the pattern matches the end of the
-  string."
-
-  This concept is best explained by example. If we had instead used the
-  pattern ``'^hello/'`` (without a dollar sign at the end), then *any* URL
-  starting with ``/hello/`` would match, such as ``/hello/foo`` and
-  ``/hello/bar``, not just ``/hello/``. Similarly, if we had left off the
-  initial caret character (i.e., ``'hello/$'``), Django would match *any*
-  URL that ends with ``hello/``, such as ``/foo/bar/hello/``. If we had
-  simply used ``hello/``, without a caret *or* dollar sign, then any URL
-  containing ``hello/`` would match, such as ``/foo/hello/bar``. Thus, we
-  use both the caret and dollar sign to ensure that only the URL
-  ``/hello/`` matches -- nothing more, nothing less.
-
-  Most of your URLpatterns will start with carets and end with dollar
-  signs, but it's nice to have the flexibility to perform more
-  sophisticated matches.
-
-  You may be wondering what happens if someone requests the URL ``/hello``
-  (that is, *without* a trailing slash). Because our URLpattern requires a
-  trailing slash, that URL would *not* match. However, by default, any
-  request to a URL that *doesn't* match a URLpattern and *doesn't* end with
-  a slash will be redirected to the same URL with a trailing slash. (This
-  is regulated by the ``APPEND_SLASH`` Django setting, which is covered in
-  Appendix D.)
-
-  If you're the type of person who likes all URLs to end with slashes
-  (which is the preference of Django's developers), all you'll need to do
-  is add a trailing slash to each URLpattern and leave ``APPEND_SLASH`` set
-  to ``True``. If you prefer your URLs *not* to have trailing slashes, or
-  if you want to decide it on a per-URL basis, set ``APPEND_SLASH`` to
-  ``False`` and put trailing slashes in your URLpatterns as you see fit.
+If you're the type of person who likes all URLs to end with slashes
+(which is the preference of Django's developers), all you'll need to do
+is add a trailing slash to each URLpattern and leave ``APPEND_SLASH`` set
+to ``True``. If you prefer your URLs *not* to have trailing slashes, or
+if you want to decide it on a per-URL basis, set ``APPEND_SLASH`` to
+``False`` and put trailing slashes in your URLpatterns as you see fit.
 
 The other thing to note about this URLconf is that we've passed the
 ``hello`` view function as an object without calling the function. This is a
@@ -275,45 +234,6 @@ restart the server between changes.) The server is running at the address
 output of your Django view.
 
 Hooray! You've made your first Django-powered Web page.
-
-.. admonition:: Regular Expressions
-
-    *Regular expressions* (or *regexes*) are a compact way of specifying
-    patterns in text. While Django URLconfs allow arbitrary regexes for
-    powerful URL matching, you'll probably only use a few regex symbols in
-    practice. Here's a selection of common symbols:
-
-    ============  ==========================================================
-    Symbol        Matches
-    ============  ==========================================================
-    ``.`` (dot)   Any single character
-
-    ``\d``        Any single digit
-
-    ``[A-Z]``     Any character between ``A`` and ``Z`` (uppercase)
-
-    ``[a-z]``     Any character between ``a`` and ``z`` (lowercase)
-
-    ``[A-Za-z]``  Any character between ``a`` and ``z`` (case-insensitive)
-
-    ``+``         One or more of the previous expression (e.g., ``\d+``
-                  matches one or more digits)
-
-    ``[^/]+``     One or more characters until (and not including) a
-                  forward slash
-
-    ``?``         Zero or one of the previous expression (e.g., ``\d?``
-                  matches zero or one digits)
-
-    ``*``         Zero or more of the previous expression (e.g., ``\d*``
-                  matches zero, one or more than one digit)
-
-    ``{1,3}``     Between one and three (inclusive) of the previous
-                  expression (e.g., ``\d{1,3}`` matches one, two or three
-                  digits)
-    ============  ==========================================================
-
-    For more on regular expressions, see http://www.djangoproject.com/r/python/re-module/.
 
 A Quick Note About 404 Errors
 -----------------------------
@@ -356,12 +276,12 @@ you to assign it to a URLpattern, just like every other entry in your URLconf.
 
 The URLpattern to match the site root is a bit unintuitive, though, so it's
 worth mentioning. When you're ready to implement a view for the site root, use
-the URLpattern ``'^$'``, which matches an empty string. For example::
+an empty string. For example::
 
     from mysite.views import hello, my_homepage_view
 
     urlpatterns = [
-        url(r'^$', my_homepage_view),
+        path('', my_homepage_view),
         # ...
     ]
 
@@ -441,7 +361,7 @@ dates. Here's how to use it::
     >>> now = datetime.datetime.now()
     >>> now
     datetime.datetime(2008, 12, 13, 14, 9, 39, 2731)
-    >>> print now
+    >>> print (now)
     2008-12-13 14:09:39.002731
 
 That's simple enough, and it has nothing to do with Django. It's just Python
@@ -511,12 +431,12 @@ After adding that to ``views.py``, add the URLpattern to ``urls.py`` to tell
 Django which URL should handle this view. Something like ``/time/`` would make
 sense::
 
-    from django.conf.urls import include, url
+    from django.urls import path
     from mysite.views import hello, current_datetime
 
     urlpatterns = [
-        url(r'^hello/$', hello),
-        url(r'^time/$', current_datetime),
+        path('hello/', hello),
+        path('time/', current_datetime),
     ]
 
 We've made two changes here. First, we imported the ``current_datetime``
@@ -531,10 +451,9 @@ date and time.
 
     Depending on your computer, the date and time may be a few hours off.
     That's because Django is time zone-aware and defaults to the
-    ``America/Chicago`` time zone. (It has to default to *something*, and that's
+    ``UTC`` time zone. (It has to default to *something*, and that's
     the time zone where the original developers live.) If you live elsewhere,
-    you'll want to change it in ``settings.py``. See the comment in that file
-    for a link to an up-to-date list of worldwide time zone options.
+    you'll want to change the ``TIME_ZONE`` variable in ``settings.py``. 
 
 URLconfs and Loose Coupling
 ===========================
@@ -565,9 +484,9 @@ without having to touch the view code. In this example, our
 this technique can come in handy::
 
     urlpatterns = [
-        url(r'^hello/$', hello),
-        url(r'^time/$', current_datetime),
-        url(r'^another-time-page/$', current_datetime),
+        path('hello/', hello),
+        path('time/', current_datetime),
+        path('another-time-page/', current_datetime),
     ]
 
 URLconfs and views are loose coupling in action. We'll continue to point out
@@ -593,11 +512,11 @@ A novice might think to code a separate view function for each hour offset,
 which might result in a URLconf like this::
 
     urlpatterns = [
-        url(r'^time/$', current_datetime),
-        url(r'^time/plus/1/$', one_hour_ahead),
-        url(r'^time/plus/2/$', two_hours_ahead),
-        url(r'^time/plus/3/$', three_hours_ahead),
-        url(r'^time/plus/4/$', four_hours_ahead),
+        path('time/', current_datetime),
+        path('time/plus/1/', one_hour_ahead),
+        path('time/plus/2/', two_hours_ahead),
+        path('time/plus/3/', three_hours_ahead),
+        path('time/plus/4/', four_hours_ahead),
     ]
 
 Clearly, this line of thought is flawed. Not only would this result in redundant
@@ -624,14 +543,14 @@ duplication. We need to do some abstraction here.
     Django's URLconf system encourages pretty URLs by making it easier to use
     pretty URLs than *not* to.
 
-How, then do we design our application to handle arbitrary hour offsets? The
-key is to use *wildcard URLpatterns*. As we mentioned previously, a URLpattern
-is a regular expression; hence, we can use the regular expression pattern
-``\d+`` to match one or more digits::
+How, then do we design our application to handle arbitrary hour offsets? 
+The key is to use angle brackets (like <offset>) to capture part of the URL 
+and send it as a keyword argument to the view. 
+    
 
     urlpatterns = [
         # ...
-        url(r'^time/plus/\d+/$', hours_ahead),
+        path('time/plus/<offset>/', hours_ahead),
         # ...
     ]
 
@@ -639,41 +558,25 @@ is a regular expression; hence, we can use the regular expression pattern
 trimmed from this example.)
 
 This new URLpattern will match any URL such as ``/time/plus/2/``,
-``/time/plus/25/``, or even ``/time/plus/100000000000/``. Come to think of it,
-let's limit it so that the maximum allowed offset is 99 hours. That means we
-want to allow either one- or two-digit numbers -- and in regular expression
-syntax, that translates into ``\d{1,2}``::
+``/time/plus/25/``, or even ``/time/plus/100000000000/``.
 
-    url(r'^time/plus/\d{1,2}/$', hours_ahead),
 
 .. note::
 
     When building Web applications, it's always important to consider the most
     outlandish data input possible, and decide whether or not the application
-    should support that input. We've curtailed the outlandishness here by
-    limiting the offset to 99 hours.
+    should support that input.
 
-Now that we've designated a wildcard for the URL, we need a way of passing that
-wildcard data to the view function, so that we can use a single view function
-for any arbitrary hour offset. We do this by placing parentheses around the
-data in the URLpattern that we want to save. In the case of our example, we
-want to save whatever number was entered in the URL, so let's put parentheses
-around the ``\d{1,2}``, like this::
-
-    url(r'^time/plus/(\d{1,2})/$', hours_ahead),
-
-If you're familiar with regular expressions, you'll be right at home here;
-we're using parentheses to *capture* data from the matched text.
 
 The final URLconf, including our previous two views, looks like this::
 
-    from django.conf.urls import url
+    from django.urls import path
     from mysite.views import hello, current_datetime, hours_ahead
 
     urlpatterns = [
-        url(r'^hello/$', hello),
-        url(r'^time/$', current_datetime),
-        url(r'^time/plus/(\d{1,2})/$', hours_ahead),
+        path('hello/', hello),
+        path('time/', current_datetime),
+        path('time/plus/<offset>/', hours_ahead),
     ]
 
 With that taken care of, let's write the ``hours_ahead`` view.
@@ -703,23 +606,17 @@ Let's step through this code one line at a time:
     ``current_datetime``. We'll say it again: each view *always* takes an
     ``HttpRequest`` object as its first parameter.
 
-  * ``offset`` is the string captured by the parentheses in the
+  * ``offset`` is the string captured by the angle brackets in the
     URLpattern. For example, if the requested URL were ``/time/plus/3/``,
     then ``offset`` would be the string ``'3'``. If the requested URL were
     ``/time/plus/21/``, then ``offset`` would be the string ``'21'``. Note
     that captured values will always be *strings*, not integers, even if
     the string is composed of only digits, such as ``'21'``.
 
-    (Technically, captured values will always be *Unicode objects*, not
-    plain Python bytestrings, but don't worry about this distinction at
-    the moment.)
-
-    We decided to call the variable ``offset``, but you can call it
-    whatever you'd like, as long as it's a valid Python identifier. The
-    variable name doesn't matter; all that matters is that it's the second
-    argument to the function, after ``request``. (It's also possible to
-    use keyword, rather than positional, arguments in an URLconf. We cover
-    that in Chapter 8.)
+    You must call the variable ``offset``, since you the ``offset``  in 
+    urls.py. If call that variable some thing else Python will raise 
+    ``TypeError: hours_ahead() got an unexpected keyword argument 'offset'``
+    because ``offset`` is a keyword argument.
 
 * The first thing we do within the function is call ``int()`` on ``offset``.
   This converts the string value to an integer.
@@ -730,15 +627,6 @@ Let's step through this code one line at a time:
   raise the exception ``django.http.Http404``, which, as you can imagine,
   results in a 404 "Page not found" error.
 
-  Astute readers will wonder: how could we ever reach the ``ValueError``
-  case, anyway, given that the regular expression in our URLpattern --
-  ``(\d{1,2})`` -- captures only digits, and therefore ``offset`` will only
-  ever be a string composed of digits? The answer is, we won't, because
-  the URLpattern provides a modest but useful level of input validation,
-  *but* we still check for the ``ValueError`` in case this view function
-  ever gets called in some other way. It's good practice to implement view
-  functions such that they don't make any assumptions about their
-  parameters. Loose coupling, remember?
 
 * In the next line of the function, we calculate the current date/time and
   add the appropriate number of hours. We've already seen
@@ -810,7 +698,7 @@ let's break it! Let's deliberately introduce a Python error into our
 Load up the development server and navigate to ``/time/plus/3/``. You'll see an
 error page with a significant amount of information, including a ``TypeError``
 message displayed at the very top: ``"unsupported type for timedelta hours
-component: unicode"``.
+component: str"``.
 
 What happened? Well, the ``datetime.timedelta`` function expects the ``hours``
 parameter to be an integer, and we commented out the bit of code that converted

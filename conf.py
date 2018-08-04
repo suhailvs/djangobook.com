@@ -35,8 +35,7 @@ release = '2.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['sphinxcontrib.fulltoc']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -71,7 +70,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'djangobook'
+html_theme = 'python_docs_theme' #'djangobook'
 html_theme_path = ['themes']
 pygments_style = 'sphinx'
 html_use_index = False          # FIXME once proper index directives are added.

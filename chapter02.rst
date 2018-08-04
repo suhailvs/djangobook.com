@@ -63,9 +63,37 @@ Installing an Official Release
 Official releases have a version number, such as 2.0.6, 2.0.5 or 2.0, and the latest
 one is always available at http://www.djangoproject.com/download/.
 
-If you're on a Linux distribution that includes a package of Django, it's a
-good idea to use the distributor's version. That way, you'll get security
-updates along with the rest of your system packages.
+It is recommended to install Django with pip.
+
+Install ``pip``. The easiest is to use the `standalone pip installer <https://pip.pypa.io/en/latest/installing/#installing-with-get-pip-py>`_. If your distribution already has pip 
+installed, you might need to update it if it’s outdated. If it’s outdated, you’ll 
+know because installation won’t work.
+
+Take a look at `virtualenv <https://virtualenv.pypa.io/>`_. These tools provide 
+isolated Python environments, which are more practical than installing packages 
+systemwide. They also allow installing packages without administrator privileges. 
+
+``venv`` is a package shipped with Python 3, which you can run using ``python3 -m venv``. 
+It serves a similar purpose to ``virtualenv``, and works in a very similar way, but it 
+doesn't need to copy Python binaries around.
+
+This `stackoverflow <https://stackoverflow.com/a/41573588/2351696>`_ answer has guide 
+to some different types of virtual environment creation tools. 
+
+I recommand ``venv``. To create a virtual environment using ``venv`` run ``python3 -m venv myenv`` 
+where myenv is the name of the virtual environment. Now a folder ``myenv`` will be created. 
+You can activate that virtual environment using command ``source myenv/bin/activate``.
+
+After you’ve created and activated a virtual environment, enter the command 
+``pip install Django`` at the shell prompt::
+
+    python3 -m venv myenv
+    source myenv/bin/activate
+    pip install Django
+
+
+Installing Manually
+-------------------
 
 If you don't have access to a prepackaged version, you can download and install
 the framework manually. To do so, first download the tarball, which will be
@@ -78,14 +106,10 @@ Here's how that process looks on Unix systems::
 
     tar xzvf Django-2.0.6.tar.gz
     cd Django-2.0.6
-    sudo python setup.py install
+    python setup.py install
 
 On Windows, we recommend using 7-Zip (http://www.djangoproject.com/r/7zip/)
-to unzip ``.tar.gz`` files. Once you've unzipped the file, start up a DOS
-shell (the "Command Prompt") with administrator privileges and run the
-following command from within the directory whose name starts with ``Django-``::
-
-    python setup.py install
+to unzip ``.tar.gz`` files. 
 
 In case you're curious: Django's files will be installed into your Python
 installation's ``site-packages`` directory -- a directory where Python looks
