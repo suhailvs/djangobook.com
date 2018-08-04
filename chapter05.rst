@@ -167,8 +167,6 @@ With all of that philosophy in mind, let's start exploring Django's database
 layer. First, we need to take care of some initial configuration; we need to
 tell Django which database server to use and how to connect to it.
 
-The simplest possible settings file is for a single-database setup using SQLite. 
-
 As with ``TEMPLATES`` in the previous chapter, database configuration lives in
 the Django settings file, called ``settings.py`` by default. Edit that file and
 look for the database settings::
@@ -183,6 +181,7 @@ look for the database settings::
         }
     }
 
+This simplest possible settings file is for a single-database setup using SQLite. 
 When connecting to other database backends, such as MySQL, Oracle, or PostgreSQL, 
 additional connection parameters will be required. See the ENGINE setting below on 
 how to specify other database types. This example is for ``PostgreSQL``::
