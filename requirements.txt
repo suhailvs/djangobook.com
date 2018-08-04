@@ -1,4 +1,4 @@
 Django==2.1
---upgrade pip setuptools
+#pip install --upgrade pip setuptools
 Sphinx==1.7.6
 sphinxcontrib-fulltoc==1.2.0

@@ -167,25 +167,40 @@ With all of that philosophy in mind, let's start exploring Django's database
 layer. First, we need to take care of some initial configuration; we need to
 tell Django which database server to use and how to connect to it.
 
-We'll assume you've set up a database server, activated it, and created a
-database within it (e.g., using a ``CREATE DATABASE`` statement). If you're
-using SQLite, no such setup is required, because SQLite uses standalone files
-on the filesystem to store its data.
+The simplest possible settings file is for a single-database setup using SQLite. 
 
-As with ``TEMPLATE_DIRS`` in the previous chapter, database configuration lives in
+As with ``TEMPLATES`` in the previous chapter, database configuration lives in
 the Django settings file, called ``settings.py`` by default. Edit that file and
 look for the database settings::
 
+    # Database
+    # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': '',                      # Or path to database file if using sqlite3.
-            'USER': '',                      # Not used with sqlite3.
-            'PASSWORD': '',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
+When connecting to other database backends, such as MySQL, Oracle, or PostgreSQL, 
+additional connection parameters will be required. See the ENGINE setting below on 
+how to specify other database types. This example is for ``PostgreSQL``::
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'mydatabase',
+            'USER': 'mydatabaseuser',
+            'PASSWORD': 'mypassword',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+
+
+We'll assume you've set up a database server, activated it, and created a
+database within it (e.g., using a ``CREATE DATABASE`` statement). 
 
 Here's a rundown of each setting.
 
@@ -198,7 +213,7 @@ Here's a rundown of each setting.
       ============================================ ============ ================================================
       Setting                                      Database     Required Adapter
       ============================================ ============ ================================================
-      ``django.db.backends.postgresql_psycopg2``   PostgreSQL   ``psycopg`` version 2.x,
+      ``django.db.backends.postgresql``            PostgreSQL   ``psycopg`` version 2.x,
                                                                 http://www.djangoproject.com/r/python-pgsql/.
 
       ``django.db.backends.mysql``                 MySQL        ``MySQLdb``,
@@ -214,12 +229,11 @@ Here's a rundown of each setting.
   and install the appropriate database adapter. Each one is available for
   free on the Web; just follow the links in the "Required Adapter" column
   in Table 5-1. If you're on Linux, your distribution's package-management
-  system might offer convenient packages. (Look for packages called
-  ``python-postgresql`` or ``python-psycopg``, for example.)
+  system might offer convenient packages. 
 
   Example::
 
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+      'ENGINE': 'django.db.backends.postgresql',
 
 * ``NAME`` tells Django the name of your database. For example::
 
@@ -329,7 +343,7 @@ configuration vs. code:
 
   Technically, the only requirement of a project is that it supplies a
   settings file, which defines the database connection information, the
-  list of installed apps, the ``TEMPLATE_DIRS``, and so forth.
+  list of installed apps, and so forth.
 
 * An app is a portable set of Django functionality, usually including
   models and views, that lives together in a single Python package.
@@ -365,7 +379,10 @@ directory within the ``mysite`` directory. Let's look at the contents
 of that directory::
 
     books/
+        migrations/
         __init__.py
+        admin.py
+        apps.py
         models.py
         tests.py
         views.py
@@ -482,7 +499,7 @@ command, enter the following::
     class Book(models.Model):
         title = models.CharField(max_length=100)
         authors = models.ManyToManyField(Author)
-        publisher = models.ForeignKey(Publisher)
+        publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
         publication_date = models.DateField()
 
 Let's quickly examine this code to cover the basics. The first thing to notice
@@ -539,112 +556,138 @@ Edit the ``settings.py`` file again, and look for the ``INSTALLED_APPS``
 setting. ``INSTALLED_APPS`` tells Django which apps are activated for a given
 project. By default, it looks something like this::
 
-    INSTALLED_APPS = (
+    INSTALLED_APPS = [
+        'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
-        'django.contrib.sites',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-    )
+    ]
 
-Temporarily comment out all six of those strings by putting a hash character
-(``#``) in front of them. (They're included by default as a common-case
-convenience, but we'll activate and discuss them in subsequent chapters.)
-While you're at it, comment out the default ``MIDDLEWARE_CLASSES`` setting, too;
-the default values in ``MIDDLEWARE_CLASSES`` depend on some of the apps we
-just commented out. Then, add  ``'books'`` to the ``INSTALLED_APPS``
+Add  ``'books.apps.BooksConfig'`` to the ``INSTALLED_APPS``
 list, so the setting ends up looking like this::
 
-    MIDDLEWARE_CLASSES = (
-        # 'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware',
-        # 'django.middleware.csrf.CsrfViewMiddleware',
-        # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-        # 'django.contrib.messages.middleware.MessageMiddleware',
-    )
+    
+    INSTALLED_APPS = [
+        'books.apps.BooksConfig',
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',        
+    ]
+   
 
-    INSTALLED_APPS = (
-        # 'django.contrib.auth',
-        # 'django.contrib.contenttypes',
-        # 'django.contrib.sessions',
-        # 'django.contrib.sites',
-        'books',
-    )
+(This book's authors prefer to put a comma after *every* element of a list, 
+regardless of whether the list has only a single element. This avoids the 
+issue of forgetting commas, and there's no penalty for using that extra comma.)
 
-(As we mentioned last chapter when setting ``TEMPLATE_DIRS``, you'll need to be
-sure to include the trailing comma in ``INSTALLED_APPS``, because it's a
-single-element tuple. By the way, this book's authors prefer to put a comma
-after *every* element of a tuple, regardless of whether the tuple has only a
-single element. This avoids the issue of forgetting commas, and there's no
-penalty for using that extra comma.)
-
-``'books'`` refers to the ``books`` app we're working on. Each app in
+``'books.apps.BooksConfig'`` refers to the ``books`` app we're working on. Each app in
 ``INSTALLED_APPS`` is represented by its full Python path -- that is, the path
 of packages, separated by dots, leading to the app package.
 
 Now that the Django app has been activated in the settings file, we can create
-the database tables in our database. First, let's validate the models by
+the database tables in our database. First, let's check the models by
 running this command::
 
-    python manage.py validate
+    python manage.py check
 
 .. SL Tested ok
 
-The ``validate`` command checks whether your models' syntax and logic are
-correct. If all is well, you'll see the message ``0 errors found``. If you
-don't, make sure you typed in the model code correctly. The error output should
+The ``check`` command checks whether your models' syntax and logic are
+correct. If all is well, you'll see the message ``System check identified no issues (0 silenced).``. 
+If you don't, make sure you typed in the model code correctly. The error output should
 give you helpful information about what was wrong with the code.
 
 Any time you think you have problems with your models, run
-``python manage.py validate``. It tends to catch all the common model problems.
+``python manage.py check``. It tends to catch all the common model problems.
 
 If your models are valid, run the following command for Django to generate
-``CREATE TABLE`` statements for your models in the ``books`` app (with colorful
-syntax highlighting available, if you're using Unix)::
+migrations for your models in the ``books`` app::
 
-    python manage.py sqlall books
+    python manage.py makemigrations books
 
 In this command, ``books`` is the name of the app. It's what you specified when
 you ran the command ``manage.py startapp``. When you run the command, you
 should see something like this::
 
-    BEGIN;
-    CREATE TABLE "books_publisher" (
-        "id" serial NOT NULL PRIMARY KEY,
-        "name" varchar(30) NOT NULL,
-        "address" varchar(50) NOT NULL,
-        "city" varchar(60) NOT NULL,
-        "state_province" varchar(30) NOT NULL,
-        "country" varchar(50) NOT NULL,
-        "website" varchar(200) NOT NULL
-    )
-    ;
-    CREATE TABLE "books_author" (
-        "id" serial NOT NULL PRIMARY KEY,
-        "first_name" varchar(30) NOT NULL,
-        "last_name" varchar(40) NOT NULL,
-        "email" varchar(75) NOT NULL
-    )
-    ;
-    CREATE TABLE "books_book" (
-        "id" serial NOT NULL PRIMARY KEY,
-        "title" varchar(100) NOT NULL,
-        "publisher_id" integer NOT NULL REFERENCES "books_publisher" ("id") DEFERRABLE INITIALLY DEFERRED,
-        "publication_date" date NOT NULL
-    )
-    ;
-    CREATE TABLE "books_book_authors" (
-        "id" serial NOT NULL PRIMARY KEY,
-        "book_id" integer NOT NULL REFERENCES "books_book" ("id") DEFERRABLE INITIALLY DEFERRED,
-        "author_id" integer NOT NULL REFERENCES "books_author" ("id") DEFERRABLE INITIALLY DEFERRED,
-        UNIQUE ("book_id", "author_id")
-    )
-    ;
-    CREATE INDEX "books_book_publisher_id" ON "books_book" ("publisher_id");
-    COMMIT;
+    Migrations for 'books':
+      books/migrations/0001_initial.py
+        - Create model Author
+        - Create model Book
+        - Create model Publisher
+        - Add field publisher to book
 
-.. SL Tested ok (sqlall output for postgres matches that shown here)
+
+By running makemigrations, you’re telling Django that you’ve made some changes to your models (in this case, you’ve made new ones) and that you’d like the changes to be stored as a migration.
+
+Migrations are how Django stores changes to your models (and thus your database schema) - they’re just files on disk. You can read the migration for your new model if you like; it’s the file books/migrations/0001_initial.py. Don’t worry, you’re not expected to read them every time Django makes one, but they’re designed to be human-editable in case you want to manually tweak how Django changes things.
+
+
+There’s a command that will run the migrations for you and manage your database schema automatically - that’s called migrate, and we’ll come to it in a moment - but first, let’s see what SQL that migration would run. The sqlmigrate command takes migration names and returns their SQL::
+
+    python manage.py sqlmigrate books 0001
+
+You should see something similar to the following (we’ve reformatted it for readability)::
+
+    BEGIN;
+    --
+    -- Create model Author
+    --
+    CREATE TABLE "books_author" (
+      "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      "first_name" varchar(30) NOT NULL, 
+      "last_name" varchar(40) NOT NULL, 
+      "email" varchar(254) NOT NULL
+    );
+    --
+    -- Create model Book
+    --
+    CREATE TABLE "books_book" (
+      "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      "title" varchar(100) NOT NULL, 
+      "publication_date" date NOT NULL
+    );
+    CREATE TABLE "books_book_authors" (
+      "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      "book_id" integer NOT NULL REFERENCES "books_book" ("id") DEFERRABLE INITIALLY DEFERRED, 
+      "author_id" integer NOT NULL REFERENCES "books_author" ("id") DEFERRABLE INITIALLY DEFERRED
+    );
+    --
+    -- Create model Publisher
+    --
+    CREATE TABLE "books_publisher" (
+      "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      "name" varchar(30) NOT NULL, 
+      "address" varchar(50) NOT NULL, 
+      "city" varchar(60) NOT NULL, 
+      "state_province" varchar(30) NOT NULL, 
+      "country" varchar(50) NOT NULL, 
+      "website" varchar(200) NOT NULL
+    );
+    --
+    -- Add field publisher to book
+    --
+    ALTER TABLE "books_book" RENAME TO "books_book__old";
+    CREATE TABLE "books_book" (
+      "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+      "title" varchar(100) NOT NULL, "publication_date" date NOT NULL, 
+      "publisher_id" integer NOT NULL REFERENCES "books_publisher" ("id") DEFERRABLE INITIALLY DEFERRED
+    );
+    INSERT INTO "books_book" (
+      "title", 
+      "publisher_id", 
+      "id", 
+      "publication_date"
+    ) SELECT "title", NULL, "id", "publication_date" FROM "books_book__old";
+    DROP TABLE "books_book__old";
+    CREATE UNIQUE INDEX books_book_authors_book_id_author_id_8714badb_uniq ON "books_book_authors" ("book_id", "author_id");
+    CREATE INDEX "books_book_authors_book_id_ed3433e7" ON "books_book_authors" ("book_id");
+    CREATE INDEX "books_book_authors_author_id_984f1ab8" ON "books_book_authors" ("author_id");
+    CREATE INDEX "books_book_publisher_id_189e6c56" ON "books_book" ("publisher_id");
+    COMMIT;
 
 Note the following:
 
@@ -669,38 +712,45 @@ Note the following:
   (e.g., using double quotes or single quotes). This example output is in
   PostgreSQL syntax.
 
-The ``sqlall`` command doesn't actually create the tables or otherwise touch
-your database -- it just prints output to the screen so you can see what SQL
-Django would execute if you asked it. If you wanted to, you could copy and
-paste this SQL into your database client, or use Unix pipes to pass it
-directly (e.g., ``python manage.py sqlall books | psql mydb``). However, Django
-provides an easier way of committing the SQL to the database: the ``syncdb``
+The ``sqlmigrate`` command doesn’t actually run the migration on your database
+(otherwise touch your database) - it just prints it to the screen so that you 
+can see what SQL Django thinks is required. It’s useful for checking what Django 
+is going to do or if you have database administrators who require SQL scripts for changes.
+
+If you wanted to, you could copy and paste this SQL into your database client. However, Django
+provides an easier way of committing the SQL to the database: the ``migrate``
 command::
 
-    python manage.py syncdb
+    python manage.py migrate
 
 Run that command, and you'll see something like this::
 
-    Creating table books_publisher
-    Creating table books_author
-    Creating table books_book
-    Installing index for books.Book model
+    Operations to perform:
+      Apply all migrations: admin, auth, books, contenttypes, sessions
+    Running migrations:
+      Applying contenttypes.0001_initial... OK
+      ...
+      Applying books.0001_initial... OK
 
-.. SL Tested ok
 
-The ``syncdb`` command is a simple "sync" of your models to your database. It
-looks at all of the models in each app in your ``INSTALLED_APPS`` setting,
-checks the database to see whether the appropriate tables exist yet, and
-creates the tables if they don't yet exist. Note that ``syncdb`` does *not*
-sync changes in models or deletions of models; if you make a change to a model
-or delete a model, and you want to update the database, ``syncdb`` will not
-handle that. (More on this in the "Making Changes to a Database Schema" section
-toward the end of this chapter.)
+The migrate command takes all the migrations that haven’t been applied (Django tracks 
+which ones are applied using a special table in your database called django_migrations) 
+and runs them against your database - essentially, synchronizing the changes you made 
+to your models with the schema in the database.
 
-If you run ``python manage.py syncdb`` again, nothing happens, because you
-haven't added any models to the ``books`` app or added any apps to
-``INSTALLED_APPS``. Ergo, it's always safe to run ``python manage.py syncdb``
--- it won't clobber things.
+Migrations are very powerful and let you change your models over time, as you develop 
+your project, without the need to delete your database or tables and make new ones - 
+it specializes in upgrading your database live, without losing data. We’ll cover them 
+in more depth in a later part of the tutorial, but for now, remember the three-step guide 
+to making model changes:
+
+* Change your models (in models.py).
+
+* Run ``python manage.py makemigrations`` to create migrations 
+  for those changes
+
+* Run ``python manage.py migrate`` to apply those changes to the database.
+
 
 If you're interested, take a moment to dive into your database server's
 command-line client and see the database tables Django created. You can
@@ -727,7 +777,7 @@ API for working with those models. Try it out by running
     >>> p2.save()
     >>> publisher_list = Publisher.objects.all()
     >>> publisher_list
-    [<Publisher: Publisher object>, <Publisher: Publisher object>]
+    <QuerySet [<Publisher: Publisher object (1)>, <Publisher: Publisher object (2)>]>
 
 .. SL Tested ok
 
@@ -784,12 +834,13 @@ When we printed out the list of publishers, all we got was this
 unhelpful display that makes it difficult to tell the ``Publisher`` objects
 apart::
 
-    [<Publisher: Publisher object>, <Publisher: Publisher object>]
+    <QuerySet [<Publisher: Publisher object (1)>, <Publisher: Publisher object (2)>]>
 
-We can fix this easily by adding a method called ``__unicode__()`` to our
-``Publisher`` class. A ``__unicode__()`` method tells Python how to display the
-"unicode" representation of an object. You can see this in action by adding a
-``__unicode__()`` method to the three models:
+We can fix this easily by adding a method called ``__str__()`` to our
+``Publisher`` class. A ``__str__()`` method tells Python how to display the
+"str" representation of an object. You can see this in action by adding a
+``__str__()`` method to the three models:
+
 
 .. parsed-literal::
 
@@ -803,7 +854,7 @@ We can fix this easily by adding a method called ``__unicode__()`` to our
         country = models.CharField(max_length=50)
         website = models.URLField()
 
-        **def __unicode__(self):**
+        **def __str__(self):**
             **return self.name**
 
     class Author(models.Model):
@@ -811,66 +862,27 @@ We can fix this easily by adding a method called ``__unicode__()`` to our
         last_name = models.CharField(max_length=40)
         email = models.EmailField()
 
-        **def __unicode__(self):**
-            **return u'%s %s' % (self.first_name, self.last_name)**
+        **def __str__(self):**
+            **return '%s %s' % (self.first_name, self.last_name)**
 
     class Book(models.Model):
         title = models.CharField(max_length=100)
         authors = models.ManyToManyField(Author)
-        publisher = models.ForeignKey(Publisher)
+        publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
         publication_date = models.DateField()
 
-        **def __unicode__(self):**
+        **def __str__(self):**
             **return self.title**
 
-As you can see, a ``__unicode__()`` method can do whatever it needs to do in order
-to return a representation of an object. Here, the ``__unicode__()`` methods for
+As you can see, a ``__str__()`` method can do whatever it needs to do in order
+to return a representation of an object. Here, the ``__str__()`` methods for
 ``Publisher`` and ``Book`` simply return the object's name and title,
-respectively, but the ``__unicode__()`` for ``Author`` is slightly more complex --
+respectively, but the ``__str__()`` for ``Author`` is slightly more complex --
 it pieces together the ``first_name`` and ``last_name`` fields, separated by a
 space.
 
-The only requirement for ``__unicode__()`` is that it return a Unicode object.
-If ``__unicode__()`` doesn't return a Unicode object -- if it returns, say, an
-integer -- then Python will raise a ``TypeError`` with a message like
-``"coercing to Unicode: need string or buffer, int found"``.
 
-.. admonition:: Unicode objects
-
-    What are Unicode objects?
-
-    You can think of a Unicode object as a Python string that can handle more
-    than a million different types of characters, from accented versions of
-    Latin characters to non-Latin characters to curly quotes and obscure
-    symbols.
-
-    Normal Python strings are *encoded*, which means they use an encoding such
-    as ASCII, ISO-8859-1 or UTF-8. If you're storing fancy characters (anything
-    beyond the standard 128 ASCII characters such as 0-9 and A-Z) in a normal
-    Python string, you have to keep track of which encoding your string is
-    using, or the fancy characters might appear messed up when they're
-    displayed or printed. Problems occur when you have data that's stored in
-    one encoding and you try to combine it with data in a different encoding,
-    or you try to display it in an application that assumes a certain encoding.
-    We've all seen Web pages and e-mails that are littered with "??? ??????"
-    or other characters in odd places; that generally suggests there's an
-    encoding problem.
-
-    Unicode objects, however, have no encoding; they use a consistent,
-    universal set of characters called, well, "Unicode." When you deal with
-    Unicode objects in Python, you can mix and match them safely without having
-    to worry about encoding issues.
-
-    Django uses Unicode objects throughout the framework. Model objects are
-    retrieved as Unicode objects, views interact with Unicode data, and
-    templates are rendered as Unicode. Generally, you won't have to worry about
-    making sure your encodings are right; things should just work.
-
-    Note that this has been a *very* high-level, dumbed down overview of
-    Unicode objects, and you owe it to yourself to learn more about the topic.
-    A good place to start is http://www.joelonsoftware.com/articles/Unicode.html .
-
-For the ``__unicode__()`` changes to take effect, exit out of the Python shell
+For the ``__str__()`` changes to take effect, exit out of the Python shell
 and enter it again with ``python manage.py shell``. (This is the simplest way
 to make code changes take effect.) Now the list of ``Publisher`` objects is
 much easier to understand::
@@ -878,19 +890,19 @@ much easier to understand::
     >>> from books.models import Publisher
     >>> publisher_list = Publisher.objects.all()
     >>> publisher_list
-    [<Publisher: Apress>, <Publisher: O'Reilly>]
+    <QuerySet [<Publisher: Apress>, <Publisher: O'Reilly>]>
 
 .. SL Tested ok
 
-Make sure any model you define has a ``__unicode__()`` method -- not only for
+Make sure any model you define has a ``__str__()`` method -- not only for
 your own convenience when using the interactive interpreter, but also because
-Django uses the output of ``__unicode__()`` in several places when it needs to
+Django uses the output of ``__str__()`` in several places when it needs to
 display objects.
 
-Finally, note that ``__unicode__()`` is a good example of adding *behavior* to
+Finally, note that ``__str__()`` is a good example of adding *behavior* to
 models. A Django model describes more than the database table layout for an
 object; it also describes any functionality that object knows how to do.
-``__unicode__()`` is one example of such functionality -- a model knows how to
+``__str__()`` is one example of such functionality -- a model knows how to
 display itself.
 
 Inserting and Updating Data
@@ -969,7 +981,7 @@ objects than creating new ones. We've already seen a way to retrieve *every*
 record for a given model::
 
     >>> Publisher.objects.all()
-    [<Publisher: Apress>, <Publisher: O'Reilly>]
+    <QuerySet [<Publisher: Apress>, <Publisher: O'Reilly>]>
 
 .. SL Tested ok
 
@@ -1019,7 +1031,7 @@ most cases, you'll want to deal with a subset of your data. In the Django API,
 you can filter your data using the ``filter()`` method::
 
     >>> Publisher.objects.filter(name='Apress')
-    [<Publisher: Apress>]
+    <QuerySet [<Publisher: Apress>]>
 
 .. SL Tested ok
 
@@ -1034,7 +1046,7 @@ something like this::
 You can pass multiple arguments into ``filter()`` to narrow down things further::
 
     >>> Publisher.objects.filter(country="U.S.A.", state_province="CA")
-    [<Publisher: Apress>]
+    <QuerySet [<Publisher: Apress>]>
 
 .. SL Tested ok
 
@@ -1050,7 +1062,7 @@ Notice that by default the lookups use the SQL ``=`` operator to do exact match
 lookups. Other lookup types are available::
 
     >>> Publisher.objects.filter(name__contains="press")
-    [<Publisher: Apress>]
+    <QuerySet [<Publisher: Apress>]>
 
 .. SL Tested ok
 
@@ -1086,8 +1098,7 @@ exception::
     >>> Publisher.objects.get(country="U.S.A.")
     Traceback (most recent call last):
         ...
-    MultipleObjectsReturned: get() returned more than one Publisher --
-        it returned 2! Lookup parameters were {'country': 'U.S.A.'}
+    books.models.Publisher.MultipleObjectsReturned: get() returned more than one Publisher -- it returned 2!
 
 .. SL Tested ok
 
@@ -1096,7 +1107,7 @@ A query that returns no objects also causes an exception::
     >>> Publisher.objects.get(name="Penguin")
     Traceback (most recent call last):
         ...
-    DoesNotExist: Publisher matching query does not exist.
+    books.models.Publisher.DoesNotExist: Publisher matching query does not exist.
 
 .. SL Tested ok
 
@@ -1107,9 +1118,9 @@ exceptions, like this::
     try:
         p = Publisher.objects.get(name='Apress')
     except Publisher.DoesNotExist:
-        print "Apress isn't in the database yet."
+        print ("Apress isn't in the database yet.")
     else:
-        print "Apress is in the database."
+        print ("Apress is in the database.")
 
 .. SL Tested ok
 
@@ -1126,7 +1137,7 @@ according to a certain value -- say, alphabetically. To do this, use the
 ``order_by()`` method::
 
     >>> Publisher.objects.order_by("name")
-    [<Publisher: Apress>, <Publisher: O'Reilly>]
+    <QuerySet [<Publisher: Apress>, <Publisher: O'Reilly>]>
 
 .. SL Tested ok
 
@@ -1140,10 +1151,10 @@ SQL now includes a specific ordering::
 You can order by any field you like::
 
     >>> Publisher.objects.order_by("address")
-    [<Publisher: O'Reilly>, <Publisher: Apress>]
+    <QuerySet [<Publisher: O'Reilly>, <Publisher: Apress>]>
 
     >>> Publisher.objects.order_by("state_province")
-    [<Publisher: Apress>, <Publisher: O'Reilly>]
+    <QuerySet [<Publisher: Apress>, <Publisher: O'Reilly>]>
 
 .. SL Tested ok
 
@@ -1151,7 +1162,7 @@ To order by multiple fields (where the second field is used to disambiguate
 ordering in cases where the first is the same), use multiple arguments::
 
     >>> Publisher.objects.order_by("state_province", "address")
-     [<Publisher: Apress>, <Publisher: O'Reilly>]
+     <QuerySet [<Publisher: Apress>, <Publisher: O'Reilly>]>
 
 .. SL Tested ok
 
@@ -1159,7 +1170,7 @@ You can also specify reverse ordering by prefixing the field name with a ``-``
 (that's a minus character)::
 
     >>> Publisher.objects.order_by("-name")
-    [<Publisher: O'Reilly>, <Publisher: Apress>]
+    <QuerySet [<Publisher: O'Reilly>, <Publisher: Apress>]>
 
 .. SL Tested ok
 
@@ -1178,7 +1189,7 @@ model:
         country = models.CharField(max_length=50)
         website = models.URLField()
 
-        def __unicode__(self):
+        def __str__(self):
             return self.name
 
         **class Meta:**
@@ -1200,7 +1211,7 @@ You've seen how you can filter data, and you've seen how you can order it. Often
 you'll need to do both. In these cases, you simply "chain" the lookups together::
 
     >>> Publisher.objects.filter(country="U.S.A.").order_by("-name")
-    [<Publisher: O'Reilly>, <Publisher: Apress>]
+    <QuerySet [<Publisher: O'Reilly>, <Publisher: Apress>]>
 
 .. SL Tested ok
 
@@ -1329,7 +1340,7 @@ method::
     >>> p = Publisher.objects.get(name="O'Reilly")
     >>> p.delete()
     >>> Publisher.objects.all()
-    [<Publisher: Apress Publishing>]
+    <QuerySet [<Publisher: Apress Publishing>]>
 
 .. SL Tested ok
 

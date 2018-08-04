@@ -363,9 +363,12 @@ like ``/home/username/djcode/``.
 
     Put your code in some directory **outside** of the document root.
 
-Change into the directory you created, and run the command
-``django-admin.py startproject mysite``. This will create a ``mysite``
-directory in your current directory.
+Change into the directory you created, and run the command::
+
+    django-admin.py startproject mysite
+    
+
+This will create a ``mysite`` directory in your current directory.
 
 .. note::
 

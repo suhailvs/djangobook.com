@@ -144,17 +144,17 @@ Now, let’s hop into the interactive Python shell and play around with the free
 
     $ python manage.py shell
 
-We’re using this instead of simply typing ``python``, because manage.py sets the ``DJANGO_SETTINGS_MODULE`` environment variable, which gives Django the Python import path to your mysite/settings.py file.
+We’re using this instead of simply typing ``python``, because ``manage.py`` sets the ``DJANGO_SETTINGS_MODULE`` environment variable, which gives Django the Python import path to your ``mysite/settings.py`` file.
 
 In code, here's what that looks like::
 
     >>> from django import template
     >>> t = template.Template('My name is {{ name }}.')
     >>> c = template.Context({'name': 'Adrian'})
-    >>> print t.render(c)
+    >>> print (t.render(c))
     My name is Adrian.
     >>> c = template.Context({'name': 'Fred'})
-    >>> print t.render(c)
+    >>> print (t.render(c))
     My name is Fred.
 
 The following sections describe each step in much more detail.
@@ -196,7 +196,7 @@ Let's go through some template system basics::
 
     >>> from django.template import Template
     >>> t = Template('My name is {{ name }}.')
-    >>> print t
+    >>> print (t)
 
 If you're following along interactively, you'll see something like this::
 
@@ -216,7 +216,7 @@ a ``TemplateSyntaxError`` exception::
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
       ...
-    django.template.TemplateSyntaxError: Invalid block tag: 'notatag'
+    django.template.exceptions.TemplateSyntaxError: Invalid block tag: 'notatag'. Did you forget to register or load this tag?
 
 The term "block tag" here refers to ``{% notatag %}``. "Block tag" and
 "template tag" are synonymous.
@@ -235,7 +235,7 @@ Rendering a Template
 --------------------
 
 Once you have a ``Template`` object, you can pass it data by giving it a
-*context*. A context is simply a set of template variable names and their
+**context**. A context is simply a set of template variable names and their
 associated values. A template uses this to populate its variables and
 evaluate its tags.
 
@@ -250,15 +250,6 @@ object's ``render()`` method with the context to "fill" the template::
     >>> t.render(c)
     u'My name is Stephane.'
 
-One thing we should point out here is that the return value of ``t.render(c)``
-is a Unicode object -- not a normal Python string. You can tell this by the
-``u`` in front of the string. Django uses Unicode objects instead of normal
-strings throughout the framework. If you understand the repercussions of that,
-be thankful for the sophisticated things Django does behind the scenes to make
-it work. If you don't understand the repercussions of that, don't worry for
-now; just know that Django's Unicode support makes it relatively painless for
-your applications to support a wide variety of character sets beyond the basic
-"A-Z" of the English language.
 
 .. admonition:: Dictionaries and Contexts
 
@@ -294,7 +285,7 @@ similar to the example in the beginning of this chapter::
     ...     'ship_date': datetime.date(2009, 4, 2),
     ...     'ordered_warranty': False})
     >>> t.render(c)
-    u"<p>Dear John Smith,</p>\n\n<p>Thanks for placing an order from Outdoor
+    "<p>Dear John Smith,</p>\n\n<p>Thanks for placing an order from Outdoor
     Equipment. It's scheduled to\nship on April 2, 2009.</p>\n\n\n<p>You
     didn't order a warranty, so you're on your own when\nthe products
     inevitably stop working.</p>\n\n\n<p>Sincerely,<br />Outdoor Equipment
@@ -339,7 +330,7 @@ Let's step through this code one statement at a time:
   the interactive interpreter displays the *representation* of the string,
   rather than the printed value of the string. If you want to see the
   string with line breaks displayed as true line breaks rather than ``'\n'``
-  characters, use the ``print`` statement: ``print t.render(c)``.
+  characters, use the ``print`` statement: ``print (t.render(c))``.
 
 Those are the fundamentals of using the Django template system: just write a
 template string, create a ``Template`` object, create a ``Context``, and call
@@ -353,11 +344,11 @@ it. For example::
 
     >>> from django.template import Template, Context
     >>> t = Template('Hello, {{ name }}')
-    >>> print t.render(Context({'name': 'John'}))
+    >>> print (t.render(Context({'name': 'John'})))
     Hello, John
-    >>> print t.render(Context({'name': 'Julie'}))
+    >>> print (t.render(Context({'name': 'Julie'})))
     Hello, Julie
-    >>> print t.render(Context({'name': 'Pat'}))
+    >>> print (t.render(Context({'name': 'Pat'})))
     Hello, Pat
 
 Whenever you're using the same template source to render multiple
@@ -367,12 +358,12 @@ object *once*, and then call ``render()`` on it multiple times::
     # Bad
     for name in ('John', 'Julie', 'Pat'):
         t = Template('Hello, {{ name }}')
-        print t.render(Context({'name': name}))
+        print (t.render(Context({'name': name})))
 
     # Good
     t = Template('Hello, {{ name }}')
     for name in ('John', 'Julie', 'Pat'):
-        print t.render(Context({'name': name}))
+        print (t.render(Context({'name': name})))
 
 Django's template parsing is quite fast. Behind the scenes, most of the parsing
 happens via a call to a single regular expression. This is in stark
@@ -401,7 +392,7 @@ of that dictionary by dictionary key, use a dot::
     >>> t = Template('{{ person.name }} is {{ person.age }} years old.')
     >>> c = Context({'person': person})
     >>> t.render(c)
-    u'Sally is 43 years old.'
+    'Sally is 43 years old.'
 
 Similarly, dots also allow access of object attributes. For example, a Python
 ``datetime.date`` object has ``year``, ``month``, and ``day`` attributes, and
@@ -419,7 +410,7 @@ you can use a dot to access those attributes in a Django template::
     >>> t = Template('The month is {{ date.month }} and the year is {{ date.year }}.')
     >>> c = Context({'date': d})
     >>> t.render(c)
-    u'The month is 5 and the year is 1993.'
+    'The month is 5 and the year is 1993.'
 
 This example uses a custom class, demonstrating that variable dots also allow
 attribute access on arbitrary objects::
@@ -431,7 +422,7 @@ attribute access on arbitrary objects::
     >>> t = Template('Hello, {{ person.first_name }} {{ person.last_name }}.')
     >>> c = Context({'person': Person('John', 'Smith')})
     >>> t.render(c)
-    u'Hello, John Smith.'
+    'Hello, John Smith.'
 
 Dots can also refer to *methods* on objects. For example, each Python string
 has the methods ``upper()`` and ``isdigit()``, and you can call those in Django
@@ -440,9 +431,9 @@ templates using the same dot syntax::
     >>> from django.template import Template, Context
     >>> t = Template('{{ var }} -- {{ var.upper }} -- {{ var.isdigit }}')
     >>> t.render(Context({'var': 'hello'}))
-    u'hello -- HELLO -- False'
+    'hello -- HELLO -- False'
     >>> t.render(Context({'var': '123'}))
-    u'123 -- 123 -- True'
+    '123 -- 123 -- True'
 
 Note that you do *not* include parentheses in the method calls. Also, it's not
 possible to pass arguments to the methods; you can only call methods that have
@@ -454,7 +445,7 @@ Finally, dots are also used to access list indices, for example::
     >>> t = Template('Item 2 is {{ items.2 }}.')
     >>> c = Context({'items': ['apples', 'bananas', 'carrots']})
     >>> t.render(c)
-    u'Item 2 is carrots.'
+    'Item 2 is carrots.'
 
 Negative list indices are not allowed. For example, the template variable
 ``{{ items.-1 }}`` would cause a ``TemplateSyntaxError``.
@@ -484,7 +475,7 @@ lookup (``person['name']``) and then a method call (``upper()``)::
     >>> t = Template('{{ person.name.upper }} is {{ person.age }} years old.')
     >>> c = Context({'person': person})
     >>> t.render(c)
-    u'SALLY is 43 years old.'
+    'SALLY is 43 years old.'
 
 Method Call Behavior
 ~~~~~~~~~~~~~~~~~~~~
@@ -515,7 +506,7 @@ some things to keep in mind:
         ...         raise SilentAssertionError
         >>> p = PersonClass4()
         >>> t.render(Context({"person": p}))
-        u'My name is .'
+        'My name is .'
 
 * A method call will only work if the method has no required arguments.
   Otherwise, the system will move to the next lookup type (list-index
@@ -552,13 +543,13 @@ empty string, failing silently. For example::
     >>> from django.template import Template, Context
     >>> t = Template('Your name is {{ name }}.')
     >>> t.render(Context())
-    u'Your name is .'
+    'Your name is .'
     >>> t.render(Context({'var': 'hello'}))
-    u'Your name is .'
+    'Your name is .'
     >>> t.render(Context({'NAME': 'hello'}))
-    u'Your name is .'
+    'Your name is .'
     >>> t.render(Context({'Name': 'hello'}))
-    u'Your name is .'
+    'Your name is .'
 
 The system fails silently rather than raising an exception because it's
 intended to be resilient to human error. In this case, all of the
@@ -1100,20 +1091,35 @@ Template Loading
 
 Django searches for template directories in a number of places, depending 
 on your template-loader settings (see `Loader types` below), but the most 
-basic way of specifying template directories is by using the TEMPLATE_DIRS 
-setting.
+basic way of specifying template directories is by using the TEMPLATES 
+setting. The ``settings.py`` generated by the ``startproject`` command defines::
 
-The TEMPLATE_DIRS setting
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                # ... some options here ...
+            },
+        },
+    ]
+
+The DIRS setting
 -------------------------
 
-Tell Django what your template directories are by using the TEMPLATE_DIRS setting 
-in your settings.py file. This should be set to a list or tuple of strings that 
+Tell Django what your template directories are by using the DIRS setting 
+in your ``TEMPLATES`` variable in ``settings.py`` file. This should be set to a list of strings that 
 contain full paths to your template directory(ies). Example::
 
-    TEMPLATE_DIRS = (
-      "/home/html/templates/lawrence.com",
-      "/home/html/templates/default",
-    )
+    TEMPLATES = [
+      {
+        # ...
+        'DIRS': [
+          "/home/html/templates/lawrence.com",
+          "/home/html/templates/default",
+        ],
+        # ...
 
 Your templates can go anywhere you want, as long as the directories and templates 
 are readable by the Web server. They can have any extension you want, such as 
@@ -1128,72 +1134,59 @@ There are a few things to note:
   directory within your project (i.e., within the ``mysite`` directory you
   created in Chapter 2).
 
-* If your ``TEMPLATE_DIRS`` contains only one directory, don't forget the
-  comma at the end of the directory string!
-
-  Bad::
-
-      # Missing comma!
-      TEMPLATE_DIRS = (
-          '/home/django/mysite/templates'
-      )
-
-  Good::
-
-      # Comma correctly in place.
-      TEMPLATE_DIRS = (
-          '/home/django/mysite/templates',
-      )
-
-  The reason for this is that Python requires commas within single-element
-  tuples to disambiguate the tuple from a parenthetical expression. This is
-  a common newbie gotcha.
 
 * If you're on Windows, include your drive letter and use Unix-style
   forward slashes rather than backslashes, as follows::
 
-      TEMPLATE_DIRS = (
-          'C:/www/django/templates',
-      )
+      TEMPLATES = [
+      {
+        # ...
+        'DIRS': [
+            'C:/www/django/templates',
+        ]
+        # ...
 
 * It's simplest to use absolute paths (i.e., directory paths that start at
   the root of the filesystem). If you want to be a bit more flexible and
   decoupled, though, you can take advantage of the fact that Django
   settings files are just Python code by constructing the contents of
-  ``TEMPLATE_DIRS`` dynamically. For example::
+  ``DIRS`` dynamically. For example::
 
-      import os.path
+      import os
 
-      TEMPLATE_DIRS = (
-          os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
-      )
+      TEMPLATES = [
+      {
+        # ...
+        'DIRS': [
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
+        ]
+        # ...
+
 
   This example uses the "magic" Python variable ``__file__``, which is
   automatically set to the file name of the Python module in which the code
   lives. It gets the name of the directory that contains ``settings.py``
   (``os.path.dirname``), then joins that with ``templates`` in a
-  cross-platform way (``os.path.join``), then ensures that everything uses
-  forward slashes instead of backslashes (in case of Windows).
+  cross-platform way (``os.path.join``).
 
   While we're on the topic of dynamic Python code in settings files, we
   should point out that it's very important to avoid Python errors in your
   settings file. If you introduce a syntax error, or a runtime error, your
   Django-powered site will likely crash.
 
-With ``TEMPLATE_DIRS`` set, the next step is to change the view code to
+With ``TEMPLATES`` set, the next step is to change the view code to
 use Django's template-loading functionality rather than hard-coding the
 template paths. Returning to our ``current_datetime`` view, let's change it
 like so::
 
     from django.template.loader import get_template
-    from django.template import Context
     from django.http import HttpResponse
     import datetime
 
     def current_datetime(request):
         now = datetime.datetime.now()
         t = get_template('current_datetime.html')
-        html = t.render(Context({'current_date': now}))
+        html = t.render({'current_date': now})
         return HttpResponse(html)
 
 In this example, we're using the function
@@ -1208,9 +1201,9 @@ extension makes sense for your application, or you can leave off extensions
 entirely.
 
 To determine the location of the template on your filesystem,
-``get_template()`` combines your template directories from ``TEMPLATE_DIRS``
+``get_template()`` combines your template directories from ``TEMPLATE``'s ``DIRS``
 with the template name that you pass to ``get_template()``. For example, if
-your ``TEMPLATE_DIRS`` is set to ``'/home/django/mysite/templates'``, the above
+your ``DIRS`` is set to ``'/home/django/mysite/templates'``, the above
 ``get_template()`` call would look for the template
 ``/home/django/mysite/templates/current_datetime.html``.
 
@@ -1344,7 +1337,7 @@ the variable ``template_name``::
     {% include template_name %}
 
 As in ``get_template()``, the file name of the template is determined by adding
-the template directory from ``TEMPLATE_DIRS`` to the requested template name.
+the template directory from ``DIRS`` to the requested template name.
 
 Included templates are evaluated with the context of the template
 that's including them. For example, consider these two templates::

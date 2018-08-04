@@ -122,26 +122,23 @@ If we ignore the commented-out code, here's the essence of a URLconf::
     
     from django.contrib import admin
     from django.urls import path
-
     urlpatterns = [
       path('admin/', admin.site.urls),
     ]
 
 Let's step through this code one line at a time:
 
-* The first line imports `path` function from the ``django.urls``
+* The first line imports ``admin`` function from ``django.contrib``.
+
+* The second line imports  ``path`` function from the ``django.urls``
   module.
 
-* The second line a python `list` is saved
+* The third line a python `list` contains a ``path`` instance is saved
   into a variable called ``urlpatterns``. 
 
 The main thing to note here is the variable ``urlpatterns``, which Django
-expects to find in your URLconf module. This variable defines the mapping
-between URLs and the code that handles those URLs. By default, as we can see,
-the URLconf is empty -- your Django application is a blank slate. (As a side
-note, that's how Django knew to show you the "Welcome to Django" page in the
-last chapter. If your URLconf is empty, Django assumes you just started a new
-project and, hence, displays that message.)  The variable ``urlpatterns`` should be a Python list of ``django.urls.path()`` instances.
+expects to find in your URLconf module. The variable ``urlpatterns`` should 
+be a Python list of ``django.urls.path()`` instances.
 
 
 To add a URL and view to the URLconf, just add a mapping between a URL
@@ -546,13 +543,13 @@ duplication. We need to do some abstraction here.
 How, then do we design our application to handle arbitrary hour offsets? 
 The key is to use angle brackets (like <offset>) to capture part of the URL 
 and send it as a keyword argument to the view. 
-    
 
     urlpatterns = [
-        # ...
-        path('time/plus/<offset>/', hours_ahead),
-        # ...
-    ]
+      # ...
+      path('time/plus/<offset>/', hours_ahead),
+      # ...
+      ]
+
 
 (We're using the ``# ...`` to imply there might be other URLpatterns that we
 trimmed from this example.)
